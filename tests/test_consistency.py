@@ -1,8 +1,9 @@
 """Keep the three copies of each remediated policy in step.
 
-The rewrites live in remediation/policies/ (the deliverable), inside data/synthetic/after/export/ (what
-iam_review.py reads) and in remediation/terraform/ (what Checkov reads). HCL is not parsed here,
-so the Terraform check is by statement Sid, which catches a missing or renamed statement.
+The rewrites live in remediation/policies/ (the deliverable), inside
+data/synthetic/after/export/ (what iam_review.py reads) and in remediation/terraform/ (what
+Checkov reads). HCL is not parsed here, so the Terraform check is by statement Sid, which
+catches a missing or renamed statement.
 """
 
 from __future__ import annotations
