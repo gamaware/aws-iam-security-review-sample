@@ -10,4 +10,4 @@ possible.
 | [0002](0002-stdlib-checker-alongside-checkov.md) | A stdlib-only Python checker alongside Checkov | Accepted |
 | [0003](0003-soc2-evidence-map-not-opinion.md) | The SOC 2 deliverable is an evidence map, not an opinion | Accepted |
 | [0004](0004-keep-vulnerable-sample-out-of-the-gate.md) | Gate the remediated code; assert the before state still fails | Accepted |
-| [0005](0005-markdown-report-pdf-built-in-ci.md) | Markdown is the canonical report; CI builds the PDF | Accepted |
+| [0005](0005-markdown-report-pdf-built-in-ci.md) | Markdown is the canonical report; the shared pipeline builds the PDF | Accepted |

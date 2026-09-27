@@ -7,8 +7,8 @@ SHELL := bash
 PYTHON ?= python3
 CHECKOV ?= uvx checkov==3.3.19
 TERRAFORM ?= terraform
-PANDOC ?= pandoc
-PDF_ENGINE ?= typst
+# Same image and arguments as the shared report.yml workflow in gamaware/.github (ADR 0005).
+PANDOC_IMAGE := pandoc/latex:3.11@sha256:cdbf139f607237498b412b3aa051008311d69b88006ab47550efba357af3b277
 BUILD := build
 EVIDENCE ?= evidence
 BEFORE := data/synthetic/before
@@ -65,14 +65,14 @@ evidence-check:
 	diff -ru --exclude=README.md evidence $(BUILD)/evidence
 	@echo "evidence/ matches a fresh run"
 
-# Render the client PDF from the canonical Markdown. CI does this on every run; locally it
-# needs pandoc and the PDF engine (typst by default).
-report: | $(BUILD)
-	$(PANDOC) report/REPORT.md report/control-evidence-map.md \
-	  --resource-path=report --pdf-engine=$(PDF_ENGINE) \
-	  --metadata title="Harbor Goods (fictional client)" \
-	  --output $(BUILD)/REPORT.pdf
-	@echo "wrote $(BUILD)/REPORT.pdf"
+# Render report/REPORT.pdf from the canonical Markdown with the pinned pandoc image CI uses.
+# Needs Docker. Commit the PDF together with the Markdown change.
+report:
+	docker run --rm --platform linux/amd64 --user "$$(id -u):$$(id -g)" -e HOME=/tmp \
+	  -v "$$PWD:/data" -w /data/report $(PANDOC_IMAGE) \
+	  REPORT.md control-evidence-map.md --pdf-engine=xelatex -V geometry:margin=2.2cm --toc \
+	  --output REPORT.pdf
+	@echo "wrote report/REPORT.pdf"
 
 # Optional, manual, never run in CI. Asks IAM Access Analyzer and the IAM policy simulator to
 # judge the remediated policies; creates no resources. See docs/methodology.md.

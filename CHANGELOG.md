@@ -17,7 +17,7 @@ rather than Semantic Versioning.
 - `remediation/`: policy rewrites, a baseline service control policy and Terraform that pass the same checks.
 - `evidence/` with `make evidence-check`, which regenerates it and fails on any difference.
 - Report consistency tests: quoted tool output, severity counts, finding IDs, links and account IDs.
-- `make verify` (offline, same command in CI), `make report` (pandoc PDF) and a manual `make test-live` that checks
+- `make verify` (offline, same command in CI), `make report` (pandoc PDF, committed as `report/REPORT.pdf`) and a manual `make test-live` that checks
   the rewrites with IAM Access Analyzer and the IAM policy simulator.
 - Methodology, ADRs 0001 to 0005, context and evidence pipeline diagrams, cover image, and a social preview
   rendered with the shared generator from `docs/assets/social-preview.json`.

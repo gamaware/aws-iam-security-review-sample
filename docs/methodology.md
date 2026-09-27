@@ -88,8 +88,8 @@ JSON, export, and Terraform, which prevents a fix from changing in only one loca
 
 ## 7. Report
 
-CI uses pandoc to render the canonical deliverable, [`report/REPORT.md`](../report/REPORT.md), and its
-control-to-evidence map as a PDF ([ADR 0005](adr/0005-markdown-report-pdf-built-in-ci.md)).
+The shared pandoc workflow renders the canonical deliverable, [`report/REPORT.md`](../report/REPORT.md), and
+its control-to-evidence map as [`report/REPORT.pdf`](../report/REPORT.pdf) ([ADR 0005](adr/0005-markdown-report-pdf-built-in-ci.md)).
 The report follows a set order: executive summary; risk-ranked findings with evidence, impact, fix, and rewrite;
 quick wins and planned work; verification; out of scope; and check reference.
 

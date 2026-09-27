@@ -46,8 +46,8 @@ With the fixes in place, rerunning the checker yields **0 findings**; Checkov re
 | [Checker](scripts/iam_review.py) | 17 offline checks in Python's standard library, about 500 lines |
 | [Methodology](docs/methodology.md) | Access model, triage from raw hits to findings, severity scale, verification levels |
 
-CI uses pandoc to combine the report and control map in a PDF. Download that PDF from the artifacts of the latest
-[CI run](https://github.com/gamaware/aws-iam-security-review-sample/actions/workflows/ci.yml).
+The [report PDF](report/REPORT.pdf) combines the report and the control map. CI rebuilds it on every run with the
+shared pandoc workflow.
 
 ## Scenario and acceptance criteria
 
@@ -99,7 +99,7 @@ Allow about two minutes for the initial run. Most of that time goes to fetching 
 downloading the AWS provider through `terraform init`. Subsequent runs finish in less than a minute.
 To inspect the findings yourself, run `python3 scripts/iam_review.py data/synthetic/before/export`.
 
-With pandoc and typst installed, `make report` generates the PDF locally. The optional `make test-live` command
+With Docker running, `make report` regenerates `report/REPORT.pdf` with the same pandoc image CI uses. The optional `make test-live` command
 runs a manual check against a non-production AWS account. Instructions are in
 [the methodology](docs/methodology.md#running-the-live-test).
 
@@ -123,7 +123,7 @@ docs/              methodology, ADRs, diagrams, cover image
 | [0002](docs/adr/0002-stdlib-checker-alongside-checkov.md) | A stdlib-only Python checker alongside Checkov | Accepted |
 | [0003](docs/adr/0003-soc2-evidence-map-not-opinion.md) | The SOC 2 deliverable is an evidence map, not an opinion | Accepted |
 | [0004](docs/adr/0004-keep-vulnerable-sample-out-of-the-gate.md) | Gate the remediated code; assert the before state still fails | Accepted |
-| [0005](docs/adr/0005-markdown-report-pdf-built-in-ci.md) | Markdown is the canonical report; CI builds the PDF | Accepted |
+| [0005](docs/adr/0005-markdown-report-pdf-built-in-ci.md) | Markdown is the canonical report; the shared pipeline builds the PDF | Accepted |
 
 ## Security and quality gates
 

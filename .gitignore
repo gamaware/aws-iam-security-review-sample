@@ -30,8 +30,9 @@ build/
 .DS_Store
 .claude-flow/
 
-# Rendered report (built in CI, never committed)
+# PDFs; only the rendered report is committed (ADR 0005)
 *.pdf
+!report/REPORT.pdf
 
 # Vale packages (vale sync)
 styles/
