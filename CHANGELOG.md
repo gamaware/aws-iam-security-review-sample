@@ -19,7 +19,8 @@ rather than Semantic Versioning.
 - Report consistency tests: quoted tool output, severity counts, finding IDs, links and account IDs.
 - `make verify` (offline, same command in CI), `make report` (pandoc PDF) and a manual `make test-live` that checks
   the rewrites with IAM Access Analyzer and the IAM policy simulator.
-- Methodology, ADRs 0001 to 0005, context and evidence pipeline diagrams, cover image.
+- Methodology, ADRs 0001 to 0005, context and evidence pipeline diagrams, cover image, and a social preview
+  rendered with the shared generator from `docs/assets/social-preview.json`.
 - CI with `permissions: {}`, SHA-pinned actions, calls to the shared `gamaware/.github` workflows (docs, actions,
   secrets, security, report PDF) pinned by commit SHA, and an OSSF Scorecard workflow; pre-commit hooks;
   CodeRabbit and Copilot review instructions.
@@ -32,5 +33,4 @@ rather than Semantic Versioning.
 
 ### To do
 
-- Re-pin the `gamaware/.github` workflow calls to its `main` commit once that repository's initial branch is merged
-  and published; the current pin is the unmerged branch commit.
+- Re-pin the `gamaware/.github` workflow calls if its first pull request merges under a different commit SHA.

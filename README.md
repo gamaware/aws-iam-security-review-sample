@@ -157,8 +157,10 @@ Checks assert the deliberately insecure fixtures as expected findings; they neve
 ## Related work
 
 This repository belongs to the [AWS DevOps portfolio](https://github.com/gamaware/aws-devops-portfolio) and supports
-the "AWS security review with least-privilege IAM fixes" service. The method is the one Alex Garcia uses in audits
-for ITESO and freelance clients in Guadalajara. All findings in this example were invented for Harbor Goods.
+the "AWS security review with least-privilege IAM fixes" service, offered through
+[Alex Garcia on Upwork](https://www.upwork.com/freelancers/~014b3520cf9e140103). The method is the one Alex Garcia
+uses in audits for ITESO and freelance clients in Guadalajara. All findings in this example were invented for
+Harbor Goods.
 
 The repository uses the [MIT](LICENSE) license and inherits its contribution, support and security policies from
 [gamaware/.github](https://github.com/gamaware/.github). Additional information appears in
