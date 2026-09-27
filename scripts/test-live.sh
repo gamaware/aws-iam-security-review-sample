@@ -62,7 +62,8 @@ validate() {
 simulate() {
   local expected="$1" file="$2" action="$3" resource="$4" decision
   shift 4
-  local args=(iam simulate-custom-policy --policy-input-list "file://$file"
+  # The document goes inline: CLI v2 rejects file:// for this list-typed parameter.
+  local args=(iam simulate-custom-policy --policy-input-list "$(<"$file")"
     --action-names "$action" --resource-arns "$resource")
   if [ "$#" -gt 0 ]; then
     args+=(--context-entries "$@")
