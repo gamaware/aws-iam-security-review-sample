@@ -70,7 +70,7 @@ evidence-check:
 report: | $(BUILD)
 	$(PANDOC) report/REPORT.md report/control-evidence-map.md \
 	  --resource-path=report --pdf-engine=$(PDF_ENGINE) \
-	  --metadata title="AWS IAM and security configuration review" \
+	  --metadata title="Harbor Goods (fictional client)" \
 	  --output $(BUILD)/REPORT.pdf
 	@echo "wrote $(BUILD)/REPORT.pdf"
 

@@ -1,21 +1,25 @@
-# Checks
+# Scripts
 
 All checks run offline against files in this repository. None needs AWS credentials.
 
 | Command | What it does |
 | --- | --- |
-| `make test` | Unit and fixture tests for both scripts (pytest) |
-| `make review` | Runs `iam_review.py`: the sample must exit 1 with output identical to the committed evidence; the remediated export must exit 0 |
+| `make verify` | Everything below except `evidence` and `test-live`; the same command CI runs |
+| `make test` | Unit, fixture and report consistency tests (pytest) |
+| `make review` | Runs `iam_review.py`: the before export must exit 1, the after export must exit 0 |
 | `make checkov` | Checkov on `remediation/terraform` must pass; on `data/synthetic/before/terraform` it must fail with exactly the checks in `evidence/checkov-before.txt` |
 | `make terraform` | `terraform fmt -check` and `terraform validate` on both roots |
+| `make evidence-check` | Regenerates every file in `evidence/` into `build/` and fails on any difference |
 | `make evidence` | Regenerates the evidence files the report cites |
+| `make report` | Renders `build/REPORT.pdf` with pandoc (CI does this on every run) |
+| `make test-live` | Optional, manual: `test-live.sh` checks the rewrites with IAM Access Analyzer and the policy simulator |
 
 ## `iam_review.py`
 
 ```bash
-python3 scripts/iam_review.py data/synthetic/before/export                  # ranked text, exit 1 on findings
-python3 scripts/iam_review.py data/synthetic/before/export --format json    # machine-readable
-python3 scripts/iam_review.py data/synthetic/before/export --fail-on HIGH   # ignore MEDIUM and LOW for the exit code
+python3 scripts/iam_review.py data/synthetic/before/export                 # ranked text, exit 1 on findings
+python3 scripts/iam_review.py data/synthetic/before/export --format json   # machine-readable
+python3 scripts/iam_review.py data/synthetic/before/export --fail-on HIGH  # exit code ignores MEDIUM and LOW
 ```
 
 The export layout and the 17 check IDs are documented in the script's docstring and in the report's check

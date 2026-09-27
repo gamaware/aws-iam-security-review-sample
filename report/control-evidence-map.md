@@ -1,9 +1,9 @@
-# SOC 2 Control to Evidence Map
+# SOC 2 control to evidence map
 
-> **Sample for a FICTIONAL client (account `123456789012`).** This is an evidence map, not an audit opinion. It shows
-> which AWS configuration supports each SOC 2 criterion and where the proof lives, so the client's auditor can test
-> it. Only a licensed CPA firm can issue a SOC 2 report or conclude that a control is designed or operating
-> effectively.
+> **Sample for a FICTIONAL client, Harbor Goods (account `123456789012`).** This is an evidence map, not an audit
+> opinion. It shows which AWS configuration supports each SOC 2 criterion and where the proof lives, so the client's
+> auditor can test it. Only a licensed CPA firm can issue a SOC 2 report or conclude that a control is designed or
+> operating effectively.
 
 ## How to read this
 
@@ -22,7 +22,7 @@
 
 ## Map
 
-| Criterion | What it asks (summary) | AWS control or configuration | Evidence artifact | Sample account | After remediation |
+| Criterion | What it asks (summary) | AWS control or configuration | Evidence artifact | Before | After remediation |
 | --- | --- | --- | --- | --- | --- |
 | CC6.1 | Logical access security over protected information assets | Root has MFA, no access keys, no routine use | `credential-report.csv` row `<root_account>`; checks ROOT-001 to ROOT-003 | Gap (F-02) | Supported |
 | CC6.1 | Same | MFA for every human principal; deny-without-MFA guardrail | `credential-report.csv` (`mfa_active`); `require-mfa-guardrail.json`; checks IAM-005, IAM-008 | Gap (F-04) | Supported |
@@ -33,9 +33,9 @@
 | CC6.6 | Protect against threats from outside the system boundary | No anonymous bucket access; account-level S3 public access block | `bucket-policies/*.json`; `remediation/terraform/s3.tf` (`aws_s3_account_public_access_block`); check S3-001; Checkov CKV_AWS_53 to CKV_AWS_56, CKV_AWS_70, CKV2_AWS_6 | Gap (F-03) | Supported |
 | CC6.6 | Same | Federated trust limited to an exact OIDC subject | `ci-deploy-trust.json`; check IAM-009 | Gap (F-01) | Supported |
 | CC6.7 | Restrict transmission and removal of information to authorized users; protect it in transit | Bucket policies deny requests without TLS; third-party access limited to one prefix, read-only, with decrypt only through S3 | `customer-exports-bucket-policy.json`, `trail-logs-bucket-policy.json`; checks S3-002, S3-003 | Gap (F-08, F-09) | Supported |
-| CC7.1 | Detect configuration changes that introduce vulnerabilities | Automated checks run on every change to IAM or Terraform | `.github/workflows/ci.yml`; `make review`, `make checkov`; AWS Config rules (recommended) | Not covered | Partial: CI covers code; AWS Config would cover console drift |
+| CC7.1 | Detect configuration changes that introduce vulnerabilities | Automated checks run on every change to IAM or Terraform | `.github/workflows/ci.yml`; `make verify`; AWS Config rules (recommended) | Not covered | Partial: CI covers code; AWS Config would cover console drift |
 | CC7.2 | Monitor components for anomalies that indicate malicious acts, and analyze them | Multi-region CloudTrail with log file validation and CloudWatch Logs delivery | `describe-trails.json`; `remediation/terraform/cloudtrail.tf`; checks CT-001, CT-002; Checkov CKV_AWS_67, CKV_AWS_36, CKV2_AWS_10 | Gap (F-07) | Partial: alarms for root sign-in and `StopLogging`, and their triage records, are planned work |
-| CC8.1 | Authorize, test, approve and implement changes to infrastructure | IAM and bucket policies changed through Terraform, pull request review and CI checks | `CODEOWNERS`; `.github/PULL_REQUEST_TEMPLATE.md`; `.github/workflows/ci.yml` | Not covered | Partial: needs branch protection settings and merged PR history as operating evidence |
+| CC8.1 | Authorize, test, approve and implement changes to infrastructure | IAM and bucket policies changed through Terraform, pull request review and CI checks | `CODEOWNERS`; `.github/workflows/ci.yml`; `make verify` | Not covered | Partial: needs branch protection settings and merged PR history as operating evidence |
 | CC9.2 | Assess and manage risks from vendors and business partners | Each third-party account listed as approved; grants scoped to a role and a prefix | `review-scope.json` (`trusted_account_ids`); check S3-002 | Gap (F-08) | Partial: needs the vendor due diligence record |
 
 Criteria not listed (for example CC1 to CC5 on governance and risk, CC6.4 and CC6.5 on physical assets, and the
@@ -50,6 +50,7 @@ for it as a carved-out subservice organization.
 | [`data/synthetic/before/export/`](../data/synthetic/before/export/) | Account state at the snapshot | Read-only CLI exports (`get-account-authorization-details`, `get-credential-report`, `describe-trails`, `get-bucket-policy`) |
 | [`evidence/iam-review-before.txt`](../evidence/iam-review-before.txt) | 27 check hits before remediation | `make evidence` (`scripts/iam_review.py`) |
 | [`evidence/iam-review-after.txt`](../evidence/iam-review-after.txt) | 0 check hits after remediation | `make evidence` |
-| [`evidence/checkov-before.txt`](../evidence/checkov-before.txt) | Checkov failures on the original Terraform | `make evidence` (Checkov, pinned version) |
+| [`evidence/checkov-before.txt`](../evidence/checkov-before.txt) | Checkov failures on the original Terraform | `make evidence` (Checkov 3.3.19) |
 | [`evidence/checkov-after.txt`](../evidence/checkov-after.txt) | 0 Checkov failures on the remediated Terraform | `make evidence` |
 | [`remediation/policies/`](../remediation/policies/) | The least-privilege policy documents | Written in this review; kept in step with Terraform by `pytest` |
+| [`remediation/scps/`](../remediation/scps/) | Organization guardrails that keep the fixes in place | Written in this review; checked by `pytest` |

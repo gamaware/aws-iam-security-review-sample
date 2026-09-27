@@ -29,3 +29,6 @@ build/
 .firecrawl/
 .DS_Store
 .claude-flow/
+
+# Rendered report (built in CI, never committed)
+*.pdf

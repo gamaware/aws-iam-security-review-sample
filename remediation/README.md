@@ -1,12 +1,13 @@
-# Remediated state (FICTIONAL)
+# Remediation: fixes as code (FICTIONAL)
 
-The "after" state of the fictional account once the report's recommendations are applied. It passes the same checks
-that flag the sample: `scripts/iam_review.py` reports no findings and Checkov reports no failed checks.
+The fixes for Harbor Goods, the fictional client, once the report's recommendations are applied. The resulting
+account state, in [`data/synthetic/after/export/`](../data/synthetic/after/export/), passes the same checks that
+flag the before state: `scripts/iam_review.py` reports no findings and Checkov reports no failed checks.
 
 | Path | Contents |
 | --- | --- |
-| [`policies/`](policies/) | The least-privilege policy rewrites, one JSON document each. This is what a client would review and paste. |
-| [`export/`](export/) | The account export as it would look after the changes, embedding the documents from `policies/` |
+| [`policies/`](policies/) | The least-privilege policy rewrites, one JSON document each. This is what a client reviews and applies. |
+| [`scps/`](scps/) | A baseline service control policy for when the account joins AWS Organizations |
 | [`terraform/`](terraform/) | The same changes as Terraform, with a `secure-bucket` module for the S3 baseline |
 
 ## What changed, by finding

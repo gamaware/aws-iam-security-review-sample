@@ -1,18 +1,9 @@
-# Security Policy
+# Security policy
 
-## What this repository contains
+`data/synthetic/before/` is **intentionally insecure** and entirely fictional. Its Terraform must never be applied to
+a real account, and reports about its planted findings describe expected behavior, not vulnerabilities.
 
-`sample-account/` is **intentionally insecure** and entirely fictional. Its Terraform must never be applied to a real
-account. Reports about the planted findings in `sample-account/` are expected behavior, not vulnerabilities.
-
-## Reporting a vulnerability
-
-Report problems in the check scripts, the remediated policies or the CI workflow privately through
-[GitHub private vulnerability reporting](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability)
-on this repository. Please do not open a public issue.
-
-Include the file, the command you ran and what you expected. You will get an acknowledgement within five working days.
-
-## Supported versions
-
-Only the `main` branch is maintained.
+To report a problem in the scripts, the remediated policies or the workflows, use
+[private vulnerability reporting](https://github.com/gamaware/aws-iam-security-review-sample/security/advisories/new)
+on this repository. The full policy, including response times, is in
+[gamaware/.github](https://github.com/gamaware/.github/blob/main/SECURITY.md).
