@@ -99,8 +99,8 @@ Allow about two minutes for the initial run. Most of that time goes to fetching 
 downloading the AWS provider through `terraform init`. Subsequent runs finish in less than a minute.
 To inspect the findings yourself, run `python3 scripts/iam_review.py data/synthetic/before/export`.
 
-With Docker running, `make report` regenerates `report/REPORT.pdf` with the same pandoc image CI uses. The optional `make test-live` command
-runs a manual check against a non-production AWS account. Instructions are in
+With Docker running, `make report` regenerates `report/REPORT.pdf` with the same pandoc image CI uses. The optional
+`make test-live` command runs a manual check against a non-production AWS account. Instructions are in
 [the methodology](docs/methodology.md#running-the-live-test).
 
 ## Repository map
