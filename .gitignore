@@ -28,3 +28,4 @@ build/
 # Tools
 .firecrawl/
 .DS_Store
+.claude-flow/

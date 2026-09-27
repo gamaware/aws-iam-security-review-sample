@@ -32,7 +32,7 @@ account ID, the approved third-party accounts and the snapshot time.
 
 ## Compliance
 
-- `checks/iam_review.py` has no AWS SDK import and makes no network calls; it reads only the export directory.
+- `scripts/iam_review.py` has no AWS SDK import and makes no network calls; it reads only the export directory.
 - The CI workflow has `permissions: {}` at the top, no `id-token: write` and no secrets, so it cannot reach AWS.
 - `review-scope.json` is required; the checker exits 2 without it.
 

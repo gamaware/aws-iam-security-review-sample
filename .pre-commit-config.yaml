@@ -24,13 +24,13 @@ repos:
       - id: terraform_validate
         args: [--hook-config=--retry-once-with-cleanup=true]
 
-  # The sample account is vulnerable on purpose; the gate applies to the remediated code.
+  # The before account in data/synthetic/before is vulnerable on purpose; the gate applies to the remediated code.
   # `make checkov` checks that the sample still fails with exactly the reported checks.
   - repo: https://github.com/bridgecrewio/checkov
     rev: 8c0ddf99eabe4db75c739320274c7764866cd03d  # frozen: 3.3.19
     hooks:
       - id: checkov
-        args: [--quiet, --compact, --framework, terraform, --skip-path, sample-account]
+        args: [--quiet, --compact, --framework, terraform, --skip-path, data/synthetic/before]
 
   - repo: https://github.com/Mateusz-Grzelinski/actionlint-py
     rev: 805f85e558841bf4d852335e036b33d2b26be1cc  # frozen: v1.7.12.25

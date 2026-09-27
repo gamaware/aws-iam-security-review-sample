@@ -14,8 +14,8 @@ updates:
       default-days: 7
   - package-ecosystem: terraform
     directories:
-      - /sample-account/terraform
-      - /remediated/terraform
+      - /data/synthetic/before/terraform
+      - /remediation/terraform
     schedule:
       interval: weekly
     cooldown:

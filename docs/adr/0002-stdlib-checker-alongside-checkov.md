@@ -32,7 +32,7 @@ cover different inputs, and the report cites both.
 ## Compliance
 
 - `ruff` in pre-commit and CI enforces style and the `S` (security) rules.
-- `checks/tests/test_iam_review.py` has a unit test per check and asserts that every check fires at least once on the
+- `tests/test_iam_review.py` has a unit test per check and asserts that every check fires at least once on the
   sample and never on the remediated export.
 - `requirements-dev.txt` lists only pytest; any new runtime import outside the standard library would fail in the CI
   `tests` job, which installs nothing else.
@@ -40,4 +40,4 @@ cover different inputs, and the report cites both.
 ## Notes
 
 Parliament and IAM Access Analyzer `validate-policy` are useful second opinions on single policy documents; see
-[`checks/README.md`](../../checks/README.md).
+[`scripts/README.md`](../../scripts/README.md).

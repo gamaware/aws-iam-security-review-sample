@@ -1,36 +1,42 @@
-# Every check in this repository runs offline: no AWS account, no credentials.
-# CI calls these same targets, so a green local run means a green pipeline.
+# Every target runs offline: no AWS account, no credentials.
+
+SHELL := bash
+.SHELLFLAGS := -o pipefail -c
 
 PYTHON ?= python3
 CHECKOV ?= uvx checkov==3.3.19
 TERRAFORM ?= terraform
+PANDOC ?= pandoc
+PDF_ENGINE ?= typst
 BUILD := build
-EVIDENCE := report/evidence
-TF_ROOTS := sample-account/terraform remediated/terraform
+EVIDENCE ?= evidence
+BEFORE := data/synthetic/before
+AFTER := data/synthetic/after
+TF_ROOTS := $(BEFORE)/terraform remediation/terraform
 
-.PHONY: all test review checkov terraform evidence clean
+.PHONY: verify test review checkov terraform evidence evidence-check report clean
 
-all: test review checkov terraform
+verify: test review checkov terraform evidence-check
+	@echo "make verify: all offline checks passed"
 
 test:
 	$(PYTHON) -m pytest
 
-# The sample account must produce exactly the findings cited in the report, and the
-# remediated account must produce none.
-review: | $(BUILD)
-	@$(PYTHON) checks/iam_review.py sample-account/export > $(BUILD)/iam-review-sample.txt; \
-	  rc=$$?; test $$rc -eq 1 || { echo "sample-account: expected exit 1, got $$rc"; exit 1; }
-	diff -u $(EVIDENCE)/iam-review-sample.txt $(BUILD)/iam-review-sample.txt
-	$(PYTHON) checks/iam_review.py remediated/export
+# The before account must fail with exactly the findings the report cites; the after
+# account must produce none.
+review:
+	@$(PYTHON) scripts/iam_review.py $(BEFORE)/export > /dev/null; rc=$$?; \
+	  test $$rc -eq 1 || { echo "before: expected exit 1, got $$rc"; exit 1; }
+	$(PYTHON) scripts/iam_review.py $(AFTER)/export > /dev/null
 
-# Remediated Terraform must pass Checkov; the sample must fail with exactly the
-# expected checks.
+# Remediated Terraform must pass Checkov; the before Terraform must fail with exactly the
+# expected checks (ADR 0004).
 checkov: | $(BUILD)
-	$(CHECKOV) --directory remediated/terraform --framework terraform --quiet --compact
-	$(CHECKOV) --directory sample-account/terraform --framework terraform --output json \
-	  --soft-fail > $(BUILD)/checkov-sample.json
-	$(PYTHON) checks/checkov_summary.py $(BUILD)/checkov-sample.json \
-	  --expect $(EVIDENCE)/checkov-sample.txt
+	$(CHECKOV) --directory remediation/terraform --framework terraform --quiet --compact
+	$(CHECKOV) --directory $(BEFORE)/terraform --framework terraform --output json \
+	  --soft-fail > $(BUILD)/checkov-before.json
+	$(PYTHON) scripts/checkov_summary.py $(BUILD)/checkov-before.json \
+	  --expect evidence/checkov-before.txt
 
 terraform:
 	$(TERRAFORM) fmt -check -recursive
@@ -41,13 +47,31 @@ terraform:
 
 # Regenerate the evidence files the report cites. Review the diff before committing.
 evidence: | $(BUILD)
-	-$(PYTHON) checks/iam_review.py sample-account/export > $(EVIDENCE)/iam-review-sample.txt
-	$(PYTHON) checks/iam_review.py remediated/export > $(EVIDENCE)/iam-review-remediated.txt
-	$(CHECKOV) --directory sample-account/terraform --framework terraform --output json \
-	  --soft-fail > $(BUILD)/checkov-sample.json
-	$(PYTHON) checks/checkov_summary.py $(BUILD)/checkov-sample.json > $(EVIDENCE)/checkov-sample.txt
-	$(CHECKOV) --directory remediated/terraform --framework terraform --quiet --compact \
-	  | awk 'NF' > $(EVIDENCE)/checkov-remediated.txt
+	mkdir -p $(EVIDENCE)
+	@$(PYTHON) scripts/iam_review.py $(BEFORE)/export > $(EVIDENCE)/iam-review-before.txt; rc=$$?; \
+	  test $$rc -eq 1 || { echo "before: expected exit 1, got $$rc"; exit 1; }
+	$(PYTHON) scripts/iam_review.py $(AFTER)/export > $(EVIDENCE)/iam-review-after.txt
+	$(CHECKOV) --directory $(BEFORE)/terraform --framework terraform --output json \
+	  --soft-fail > $(BUILD)/checkov-before.json
+	$(PYTHON) scripts/checkov_summary.py $(BUILD)/checkov-before.json > $(EVIDENCE)/checkov-before.txt
+	$(CHECKOV) --directory remediation/terraform --framework terraform --quiet --compact \
+	  | awk 'NF' > $(EVIDENCE)/checkov-after.txt
+
+# Regenerate every evidence file into build/ and fail if any committed file differs.
+evidence-check:
+	rm -rf $(BUILD)/evidence
+	$(MAKE) --no-print-directory evidence EVIDENCE=$(BUILD)/evidence
+	diff -ru --exclude=README.md evidence $(BUILD)/evidence
+	@echo "evidence/ matches a fresh run"
+
+# Render the client PDF from the canonical Markdown. CI does this on every run; locally it
+# needs pandoc and the PDF engine (typst by default).
+report: | $(BUILD)
+	$(PANDOC) report/REPORT.md report/control-evidence-map.md \
+	  --resource-path=report --pdf-engine=$(PDF_ENGINE) \
+	  --metadata title="AWS IAM and security configuration review" \
+	  --output $(BUILD)/REPORT.pdf
+	@echo "wrote $(BUILD)/REPORT.pdf"
 
 $(BUILD):
 	mkdir -p $@

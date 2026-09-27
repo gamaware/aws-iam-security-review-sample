@@ -14,9 +14,9 @@
 A client hires a reviewer to look at an AWS account's IAM and security configuration. This repository is a complete,
 reproducible example of what they get back:
 
-- [**Security review report**](report/security-review-report.md): executive summary, nine findings ranked by risk,
+- [**Security review report**](report/REPORT.md): executive summary, nine findings ranked by risk,
   each with its evidence, impact, fix and least-privilege policy rewrite; then quick wins, planned work and scope.
-- [**SOC 2 control to evidence map**](report/soc2-control-evidence-map.md): Trust Services Criteria (CC6.1 to CC9.2)
+- [**SOC 2 control to evidence map**](report/control-evidence-map.md): Trust Services Criteria (CC6.1 to CC9.2)
   linked to the AWS control and the evidence file, with a status before and after remediation. An evidence map, not
   an audit opinion.
 - [**Remediated policies and Terraform**](remediated/): the rewrites, proven by the same checks that flagged the
@@ -93,7 +93,7 @@ make review PYTHON=.venv/bin/python      # sample: findings identical to the evi
 make checkov                             # remediated passes; sample fails with exactly the expected checks
 make terraform                           # fmt and validate both Terraform roots
 
-python3 checks/iam_review.py sample-account/export   # read the findings yourself
+python3 scripts/iam_review.py data/synthetic/before/export   # read the findings yourself
 ```
 
 `make all` runs the four targets. The first `terraform init` downloads the AWS provider (several hundred MB); nothing

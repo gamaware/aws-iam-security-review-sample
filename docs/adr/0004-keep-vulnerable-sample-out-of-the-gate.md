@@ -15,11 +15,11 @@ longer exists.
 
 We gate both sides, in opposite directions:
 
-- `remediated/` must be clean: `checks/iam_review.py` exits 0 and Checkov reports no failed checks. The Checkov
-  pre-commit hook skips only `sample-account/`.
-- `sample-account/` must fail with exactly the committed evidence: `make review` diffs the checker output against
-  `report/evidence/iam-review-sample.txt`, and `make checkov` compares Checkov's failed checks with
-  `report/evidence/checkov-sample.txt`.
+- `remediation/` and `data/synthetic/after/` must be clean: `scripts/iam_review.py` exits 0 and Checkov reports no
+  failed checks. The Checkov pre-commit hook skips only `data/synthetic/before/`.
+- `data/synthetic/before/` must fail with exactly the committed evidence: `make evidence-check` regenerates every
+  file in `evidence/` and diffs it against the committed copy, and `make checkov` compares Checkov's failed checks
+  with `evidence/checkov-before.txt`.
 
 Checkov is pinned to one version in pre-commit, the Makefile and CI so that the expected list is stable.
 
@@ -27,12 +27,13 @@ Checkov is pinned to one version in pre-commit, the Makefile and CI so that the 
 
 - The report cannot drift from the tools: any change in detection shows up as a failing CI job with a diff.
 - Upgrading Checkov is a deliberate change: bump the pin, run `make evidence`, and review the evidence diff.
-- The skip of `sample-account/` in the pre-commit Checkov hook is visible in `.pre-commit-config.yaml` with its reason.
+- The skip of `data/synthetic/before/` in the pre-commit Checkov hook is visible in `.pre-commit-config.yaml` with
+  its reason.
 
 ## Compliance
 
-- CI jobs `tests` (runs `make review`) and `checkov` (runs `make checkov`) enforce both directions on every pull
-  request.
+- CI runs `make review`, `make checkov` and `make evidence-check` on every pull request, so both directions are
+  enforced.
 - `test_committed_evidence_matches_a_fresh_run` and `test_remediated_account_is_clean` repeat the checker side in
   pytest.
 

@@ -1,0 +1,232 @@
+{
+  "UserDetailList": [
+    {
+      "Path": "/",
+      "UserName": "alice.admin",
+      "UserId": "AIDAEXAMPLEALICE00001",
+      "Arn": "arn:aws:iam::123456789012:user/alice.admin",
+      "GroupList": ["Admins"],
+      "UserPolicyList": [],
+      "AttachedManagedPolicies": []
+    },
+    {
+      "Path": "/",
+      "UserName": "bob.ops",
+      "UserId": "AIDAEXAMPLEBOBOPS0001",
+      "Arn": "arn:aws:iam::123456789012:user/bob.ops",
+      "GroupList": ["PlatformOps"],
+      "UserPolicyList": [],
+      "AttachedManagedPolicies": []
+    },
+    {
+      "Path": "/",
+      "UserName": "deploy-bot",
+      "UserId": "AIDAEXAMPLEDEPLOY0001",
+      "Arn": "arn:aws:iam::123456789012:user/deploy-bot",
+      "GroupList": [],
+      "UserPolicyList": [
+        {
+          "PolicyName": "deploy-bot-s3",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "ReleaseUploads",
+                "Effect": "Allow",
+                "Action": "s3:*",
+                "Resource": "*"
+              }
+            ]
+          }
+        }
+      ],
+      "AttachedManagedPolicies": []
+    },
+    {
+      "Path": "/",
+      "UserName": "legacy-reporting",
+      "UserId": "AIDAEXAMPLELEGACY0001",
+      "Arn": "arn:aws:iam::123456789012:user/legacy-reporting",
+      "GroupList": [],
+      "UserPolicyList": [],
+      "AttachedManagedPolicies": [
+        {
+          "PolicyName": "AmazonAthenaFullAccess",
+          "PolicyArn": "arn:aws:iam::aws:policy/AmazonAthenaFullAccess"
+        }
+      ]
+    }
+  ],
+  "GroupDetailList": [
+    {
+      "Path": "/",
+      "GroupName": "Admins",
+      "GroupId": "AGPAEXAMPLEADMINS0001",
+      "Arn": "arn:aws:iam::123456789012:group/Admins",
+      "GroupPolicyList": [],
+      "AttachedManagedPolicies": [
+        {
+          "PolicyName": "AdministratorAccess",
+          "PolicyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        }
+      ]
+    },
+    {
+      "Path": "/",
+      "GroupName": "PlatformOps",
+      "GroupId": "AGPAEXAMPLEPLATOPS001",
+      "Arn": "arn:aws:iam::123456789012:group/PlatformOps",
+      "GroupPolicyList": [],
+      "AttachedManagedPolicies": [
+        {
+          "PolicyName": "platform-ops",
+          "PolicyArn": "arn:aws:iam::123456789012:policy/platform-ops"
+        }
+      ]
+    }
+  ],
+  "RoleDetailList": [
+    {
+      "Path": "/",
+      "RoleName": "ci-deploy",
+      "RoleId": "AROAEXAMPLECIDEPLOY01",
+      "Arn": "arn:aws:iam::123456789012:role/ci-deploy",
+      "AssumeRolePolicyDocument": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Federated": "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+              "StringEquals": {"token.actions.githubusercontent.com:aud": "sts.amazonaws.com"},
+              "StringLike": {"token.actions.githubusercontent.com:sub": "repo:harborgoods/*"}
+            }
+          }
+        ]
+      },
+      "InstanceProfileList": [],
+      "RolePolicyList": [
+        {
+          "PolicyName": "ci-deploy-inline",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "TemporaryFullAccessForPipeline",
+                "Effect": "Allow",
+                "Action": "*",
+                "Resource": "*"
+              }
+            ]
+          }
+        }
+      ],
+      "AttachedManagedPolicies": []
+    },
+    {
+      "Path": "/aws-service-role/support.amazonaws.com/",
+      "RoleName": "AWSServiceRoleForSupport",
+      "RoleId": "AROAEXAMPLESUPPORT001",
+      "Arn": "arn:aws:iam::123456789012:role/aws-service-role/support.amazonaws.com/AWSServiceRoleForSupport",
+      "AssumeRolePolicyDocument": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {"Service": "support.amazonaws.com"},
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "InstanceProfileList": [],
+      "RolePolicyList": [],
+      "AttachedManagedPolicies": []
+    }
+  ],
+  "Policies": [
+    {
+      "PolicyName": "AdministratorAccess",
+      "Arn": "arn:aws:iam::aws:policy/AdministratorAccess",
+      "Path": "/",
+      "DefaultVersionId": "v1",
+      "AttachmentCount": 1,
+      "IsAttachable": true,
+      "PolicyVersionList": [
+        {
+          "VersionId": "v1",
+          "IsDefaultVersion": true,
+          "Document": {
+            "Version": "2012-10-17",
+            "Statement": [{"Effect": "Allow", "Action": "*", "Resource": "*"}]
+          }
+        }
+      ]
+    },
+    {
+      "PolicyName": "AmazonAthenaFullAccess",
+      "Arn": "arn:aws:iam::aws:policy/AmazonAthenaFullAccess",
+      "Path": "/",
+      "DefaultVersionId": "v1",
+      "AttachmentCount": 1,
+      "IsAttachable": true,
+      "_comment": "Abridged to the statements relevant to this review.",
+      "PolicyVersionList": [
+        {
+          "VersionId": "v1",
+          "IsDefaultVersion": true,
+          "Document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "BaseAthenaPermissions",
+                "Effect": "Allow",
+                "Action": ["athena:*"],
+                "Resource": ["*"]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "PolicyName": "platform-ops",
+      "Arn": "arn:aws:iam::123456789012:policy/platform-ops",
+      "Path": "/",
+      "DefaultVersionId": "v3",
+      "AttachmentCount": 1,
+      "IsAttachable": true,
+      "PolicyVersionList": [
+        {
+          "VersionId": "v3",
+          "IsDefaultVersion": true,
+          "Document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "ManageAppRoles",
+                "Effect": "Allow",
+                "Action": ["iam:*"],
+                "Resource": "*"
+              },
+              {
+                "Sid": "PassAnyRole",
+                "Effect": "Allow",
+                "Action": "iam:PassRole",
+                "Resource": "*"
+              },
+              {
+                "Sid": "InstanceLifecycle",
+                "Effect": "Allow",
+                "Action": ["ec2:StopInstances", "ec2:TerminateInstances", "ec2:Describe*"],
+                "Resource": "*"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

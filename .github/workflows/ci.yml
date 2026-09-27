@@ -53,8 +53,8 @@ jobs:
         with:
           enable-cache: false
 
-      - name: Remediated passes, sample fails with the expected checks
-        run: make checkov
+      - name: Remediated passes, before fails with the expected checks; evidence is reproducible
+        run: make checkov evidence-check
 
   terraform:
     name: Terraform fmt and validate
