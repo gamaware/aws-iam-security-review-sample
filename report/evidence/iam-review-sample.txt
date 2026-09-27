@@ -1,0 +1,31 @@
+IAM review of sample-account/export
+
+CRITICAL IAM-001  group/Admins via AdministratorAccess: Action * on Resource *
+CRITICAL IAM-001  role/ci-deploy via ci-deploy-inline: Action * on Resource *
+CRITICAL ROOT-001 root: access key 1 is active
+CRITICAL ROOT-002 root: mfa_active is false
+CRITICAL S3-001   s3://examplecorp-customer-exports: Principal * allowed s3:GetObject
+HIGH     CT-001   cloudtrail: trails: management-events
+HIGH     IAM-002  group/PlatformOps via platform-ops: iam:* on *
+HIGH     IAM-002  user/deploy-bot via deploy-bot-s3: s3:* on *
+HIGH     IAM-002  user/legacy-reporting via AmazonAthenaFullAccess: athena:* on *
+HIGH     IAM-004  group/PlatformOps via platform-ops: iam:* lets it pass any role
+HIGH     IAM-004  group/PlatformOps via platform-ops: iam:PassRole lets it pass any role
+HIGH     IAM-005  group/Admins via AdministratorAccess: 17/17 sensitive actions (cloudtrail:DeleteTrail, ...)
+HIGH     IAM-005  group/PlatformOps via platform-ops: 10/17 sensitive actions (iam:AttachRolePolicy, ...)
+HIGH     IAM-005  user/deploy-bot via deploy-bot-s3: 2/17 sensitive actions (s3:DeleteBucket, ...)
+HIGH     IAM-006  user/deploy-bot: key 1 is 406 days old
+HIGH     IAM-006  user/legacy-reporting: key 1 is 716 days old
+HIGH     IAM-006  user/legacy-reporting: key 2 is 302 days old
+HIGH     IAM-008  user/alice.admin: console password, no MFA device
+HIGH     IAM-009  role/ci-deploy: sub wildcard: repo:examplecorp/*
+HIGH     ROOT-003 root: password used 5 days before snapshot
+MEDIUM   CT-002   trail/management-events: LogFileValidationEnabled false
+MEDIUM   IAM-003  group/PlatformOps via platform-ops: ec2:StopInstances, ec2:TerminateInstances on *
+MEDIUM   IAM-007  user/legacy-reporting: key 1 unused 211 days
+MEDIUM   IAM-007  user/legacy-reporting: key 2 never used
+MEDIUM   S3-002   s3://examplecorp-customer-exports: account 111122223333 allowed s3:*
+LOW      S3-003   s3://examplecorp-customer-exports: no Deny on aws:SecureTransport false
+LOW      S3-003   s3://examplecorp-trail-logs: no Deny on aws:SecureTransport false
+
+Totals: CRITICAL 5, HIGH 15, MEDIUM 5, LOW 2

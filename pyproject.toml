@@ -1,0 +1,15 @@
+[tool.pytest.ini_options]
+pythonpath = ["checks"]
+testpaths = ["checks/tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["checks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "B", "UP", "S"]
+
+[tool.ruff.lint.per-file-ignores]
+"checks/tests/*" = ["S101"]
