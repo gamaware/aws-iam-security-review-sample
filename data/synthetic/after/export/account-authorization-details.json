@@ -4,7 +4,7 @@
       "Path": "/",
       "UserName": "bob.ops",
       "UserId": "AIDAEXAMPLEBOBOPS0001",
-      "Arn": "arn:aws:iam::123456789012:user/bob.ops",
+      "Arn": "arn:aws:iam::111122223333:user/bob.ops",
       "GroupList": [
         "PlatformOps"
       ],
@@ -17,16 +17,16 @@
       "Path": "/",
       "GroupName": "PlatformOps",
       "GroupId": "AGPAEXAMPLEPLATOPS001",
-      "Arn": "arn:aws:iam::123456789012:group/PlatformOps",
+      "Arn": "arn:aws:iam::111122223333:group/PlatformOps",
       "GroupPolicyList": [],
       "AttachedManagedPolicies": [
         {
           "PolicyName": "platform-ops",
-          "PolicyArn": "arn:aws:iam::123456789012:policy/platform-ops"
+          "PolicyArn": "arn:aws:iam::111122223333:policy/platform-ops"
         },
         {
           "PolicyName": "require-mfa",
-          "PolicyArn": "arn:aws:iam::123456789012:policy/require-mfa"
+          "PolicyArn": "arn:aws:iam::111122223333:policy/require-mfa"
         }
       ]
     }
@@ -36,7 +36,7 @@
       "Path": "/",
       "RoleName": "ci-deploy",
       "RoleId": "AROAEXAMPLECIDEPLOY01",
-      "Arn": "arn:aws:iam::123456789012:role/ci-deploy",
+      "Arn": "arn:aws:iam::111122223333:role/ci-deploy",
       "AssumeRolePolicyDocument": {
         "Version": "2012-10-17",
         "Statement": [
@@ -44,7 +44,7 @@
             "Sid": "GitHubProductionEnvironmentOnly",
             "Effect": "Allow",
             "Principal": {
-              "Federated": "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com"
+              "Federated": "arn:aws:iam::111122223333:oidc-provider/token.actions.githubusercontent.com"
             },
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Condition": {
@@ -93,7 +93,7 @@
                   "lambda:UpdateFunctionCode",
                   "lambda:PublishVersion"
                 ],
-                "Resource": "arn:aws:lambda:us-east-1:123456789012:function:reporting-app"
+                "Resource": "arn:aws:lambda:us-east-1:111122223333:function:reporting-app"
               }
             ]
           }
@@ -105,7 +105,7 @@
       "Path": "/aws-service-role/support.amazonaws.com/",
       "RoleName": "AWSServiceRoleForSupport",
       "RoleId": "AROAEXAMPLESUPPORT001",
-      "Arn": "arn:aws:iam::123456789012:role/aws-service-role/support.amazonaws.com/AWSServiceRoleForSupport",
+      "Arn": "arn:aws:iam::111122223333:role/aws-service-role/support.amazonaws.com/AWSServiceRoleForSupport",
       "AssumeRolePolicyDocument": {
         "Version": "2012-10-17",
         "Statement": [
@@ -126,7 +126,7 @@
   "Policies": [
     {
       "PolicyName": "platform-ops",
-      "Arn": "arn:aws:iam::123456789012:policy/platform-ops",
+      "Arn": "arn:aws:iam::111122223333:policy/platform-ops",
       "Path": "/",
       "DefaultVersionId": "v1",
       "AttachmentCount": 1,
@@ -152,13 +152,13 @@
                   "iam:GetRolePolicy",
                   "iam:ListAttachedRolePolicies"
                 ],
-                "Resource": "arn:aws:iam::123456789012:role/*"
+                "Resource": "arn:aws:iam::111122223333:role/*"
               },
               {
                 "Sid": "PassOnlyAppRolesToEc2WithMfa",
                 "Effect": "Allow",
                 "Action": "iam:PassRole",
-                "Resource": "arn:aws:iam::123456789012:role/app-*",
+                "Resource": "arn:aws:iam::111122223333:role/app-*",
                 "Condition": {
                   "StringEquals": {
                     "iam:PassedToService": "ec2.amazonaws.com"
@@ -185,7 +185,7 @@
                   "ec2:StopInstances",
                   "ec2:TerminateInstances"
                 ],
-                "Resource": "arn:aws:ec2:*:123456789012:instance/*",
+                "Resource": "arn:aws:ec2:*:111122223333:instance/*",
                 "Condition": {
                   "StringEquals": {
                     "aws:ResourceTag/team": "platform"
@@ -199,7 +199,7 @@
     },
     {
       "PolicyName": "require-mfa",
-      "Arn": "arn:aws:iam::123456789012:policy/require-mfa",
+      "Arn": "arn:aws:iam::111122223333:policy/require-mfa",
       "Path": "/",
       "DefaultVersionId": "v1",
       "AttachmentCount": 1,

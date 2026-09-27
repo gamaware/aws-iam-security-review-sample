@@ -62,7 +62,7 @@ The report's fixes as Terraform. Validated and scanned offline, never applied.
 | ---- | ----------- | ---- | ------- | :------: |
 | github\_repository | The one GitHub repository (owner/name) whose production environment may deploy. | `string` | `"harborgoods/reporting-app"` | no |
 | lambda\_function\_name | The one function the CI role may update. | `string` | `"reporting-app"` | no |
-| partner\_role\_arn | Role in the approved analytics partner account that reads its export prefix. Placeholder ID. | `string` | `"arn:aws:iam::111122223333:role/partner-ingest"` | no |
+| partner\_role\_arn | Role in the approved analytics partner account that reads its export prefix. Placeholder ID. | `string` | `"arn:aws:iam::999988887777:role/partner-ingest"` | no |
 | region | Home region of the fictional account. | `string` | `"us-east-1"` | no |
 | release\_bucket\_name | Existing bucket for release artifacts, owned by the application stack. | `string` | `"harborgoods-release-artifacts"` | no |
 

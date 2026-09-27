@@ -17,7 +17,7 @@ EVIDENCE_MAP = (REPO / "report" / "control-evidence-map.md").read_text()
 EVIDENCE = REPO / "evidence"
 HIT = re.compile(r"^(CRITICAL|HIGH|MEDIUM|LOW)\s")
 SKIP_DIRS = {".git", ".venv", ".terraform", ".pytest_cache", ".ruff_cache", "build", ".claude-flow"}
-ALLOWED_ACCOUNT_IDS = {"111122223333", "123456789012", "444455556666"}
+ALLOWED_ACCOUNT_IDS = {"111122223333", "444455556666", "999988887777"}
 
 
 def hits(text: str) -> list[str]:

@@ -1,6 +1,6 @@
 # SOC 2 control to evidence map
 
-> **Sample for a FICTIONAL client, Harbor Goods (account `123456789012`).** This is an evidence map, not an audit
+> **Sample for a FICTIONAL client, Harbor Goods (account `111122223333`).** This is an evidence map, not an audit
 > opinion. It shows which AWS configuration supports each SOC 2 criterion and where the proof lives, so the client's
 > auditor can test it. Only a licensed CPA firm can issue a SOC 2 report or conclude that a control is designed or
 > operating effectively.

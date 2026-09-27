@@ -1,7 +1,7 @@
 # Synthetic data: Harbor Goods (FICTIONAL)
 
-Harbor Goods is a fictional mid-size retailer. Its AWS account `123456789012` and its analytics vendor's account
-`111122223333` are AWS documentation example IDs. No file here was exported from a real account.
+Harbor Goods is a fictional mid-size retailer. Its AWS account `111122223333` and its analytics vendor's account
+`999988887777` are AWS documentation example IDs. No file here was exported from a real account.
 
 | Path | State | Read by |
 | --- | --- | --- |

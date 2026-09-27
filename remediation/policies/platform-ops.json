@@ -15,13 +15,13 @@
         "iam:GetRolePolicy",
         "iam:ListAttachedRolePolicies"
       ],
-      "Resource": "arn:aws:iam::123456789012:role/*"
+      "Resource": "arn:aws:iam::111122223333:role/*"
     },
     {
       "Sid": "PassOnlyAppRolesToEc2WithMfa",
       "Effect": "Allow",
       "Action": "iam:PassRole",
-      "Resource": "arn:aws:iam::123456789012:role/app-*",
+      "Resource": "arn:aws:iam::111122223333:role/app-*",
       "Condition": {
         "StringEquals": {
           "iam:PassedToService": "ec2.amazonaws.com"
@@ -48,7 +48,7 @@
         "ec2:StopInstances",
         "ec2:TerminateInstances"
       ],
-      "Resource": "arn:aws:ec2:*:123456789012:instance/*",
+      "Resource": "arn:aws:ec2:*:111122223333:instance/*",
       "Condition": {
         "StringEquals": {
           "aws:ResourceTag/team": "platform"

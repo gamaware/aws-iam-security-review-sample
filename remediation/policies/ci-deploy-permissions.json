@@ -18,7 +18,7 @@
       "Sid": "DeployOneFunction",
       "Effect": "Allow",
       "Action": ["lambda:GetFunction", "lambda:UpdateFunctionCode", "lambda:PublishVersion"],
-      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:reporting-app"
+      "Resource": "arn:aws:lambda:us-east-1:111122223333:function:reporting-app"
     }
   ]
 }

@@ -88,8 +88,8 @@ MFA="ContextKeyName=aws:MultiFactorAuthPresent,ContextKeyValues=true,ContextKeyT
 TO_EC2="ContextKeyName=iam:PassedToService,ContextKeyValues=ec2.amazonaws.com,ContextKeyType=string"
 TEAM_PLATFORM="ContextKeyName=aws:ResourceTag/team,ContextKeyValues=platform,ContextKeyType=string"
 TEAM_OTHER="ContextKeyName=aws:ResourceTag/team,ContextKeyValues=data,ContextKeyType=string"
-ACCOUNT_ARN="arn:aws:iam::123456789012"
-INSTANCE="arn:aws:ec2:us-east-1:123456789012:instance/i-0123456789abcdef0"
+ACCOUNT_ARN="arn:aws:iam::111122223333"
+INSTANCE="arn:aws:ec2:us-east-1:111122223333:instance/i-0123456789abcdef0"
 
 echo "== IAM Access Analyzer policy validation"
 for file in platform-ops require-mfa-guardrail ci-deploy-permissions; do
@@ -119,9 +119,9 @@ simulate implicitDeny "$POLICIES/platform-ops.json" iam:AttachUserPolicy "$ACCOU
 simulate allowed "$POLICIES/platform-ops.json" ec2:TerminateInstances "$INSTANCE" "$TEAM_PLATFORM"
 simulate implicitDeny "$POLICIES/platform-ops.json" ec2:TerminateInstances "$INSTANCE" "$TEAM_OTHER"
 simulate allowed "$POLICIES/ci-deploy-permissions.json" lambda:UpdateFunctionCode \
-  "arn:aws:lambda:us-east-1:123456789012:function:reporting-app"
+  "arn:aws:lambda:us-east-1:111122223333:function:reporting-app"
 simulate implicitDeny "$POLICIES/ci-deploy-permissions.json" lambda:UpdateFunctionCode \
-  "arn:aws:lambda:us-east-1:123456789012:function:billing-app"
+  "arn:aws:lambda:us-east-1:111122223333:function:billing-app"
 simulate implicitDeny "$POLICIES/ci-deploy-permissions.json" iam:CreateUser "$ACCOUNT_ARN:user/intruder"
 
 if [ "$FAILURES" -gt 0 ]; then

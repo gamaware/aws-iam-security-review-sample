@@ -1,7 +1,7 @@
 {
-  "_comment": "FICTIONAL account after remediation. 111122223333 is the analytics partner the client approved in writing.",
-  "account_id": "123456789012",
-  "trusted_account_ids": ["111122223333"],
+  "_comment": "FICTIONAL account after remediation. 999988887777 is the analytics partner the client approved in writing.",
+  "account_id": "111122223333",
+  "trusted_account_ids": ["999988887777"],
   "key_max_age_days": 90,
   "snapshot_time": "2025-09-30T12:00:00+00:00"
 }

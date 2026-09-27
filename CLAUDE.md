@@ -14,7 +14,7 @@ the portfolio standard for sample deliverables.
 
 ## Rules
 
-- Account IDs: AWS documentation examples only (`123456789012` client, `111122223333` partner, `444455556666`).
+- Account IDs: AWS documentation examples only (`111122223333` client, `999988887777` partner, `444455556666`).
   No real names, accounts, emails, IPs, keys or employers. `example.com` for domains. No AI mentions. English,
   dateless prose.
 - If a fixture or check changes: `make evidence`, review the diff, update `report/` in the same change.

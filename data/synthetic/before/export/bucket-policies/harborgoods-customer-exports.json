@@ -11,7 +11,7 @@
     {
       "Sid": "AnalyticsVendorAccess",
       "Effect": "Allow",
-      "Principal": {"AWS": "arn:aws:iam::111122223333:root"},
+      "Principal": {"AWS": "arn:aws:iam::999988887777:root"},
       "Action": "s3:*",
       "Resource": [
         "arn:aws:s3:::harborgoods-customer-exports",

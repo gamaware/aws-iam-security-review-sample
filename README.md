@@ -10,7 +10,7 @@ reproducible evidence and a fix expressed as code.
 ![AWS security review with least-privilege IAM fixes](docs/assets/cover.png)
 
 > **This repository contains only fictional material.** The invented mid-size retailer Harbor Goods uses
-> AWS documentation example account ID `123456789012`; its analytics vendor uses example ID `111122223333`.
+> AWS documentation example account ID `111122223333`; its analytics vendor uses example ID `999988887777`.
 > The Terraform under `data/synthetic/before/` contains deliberate security weaknesses. Never apply it.
 
 ## Executive summary

@@ -15,7 +15,7 @@
     {
       "Sid": "PartnerListsItsPrefix",
       "Effect": "Allow",
-      "Principal": {"AWS": "arn:aws:iam::111122223333:role/partner-ingest"},
+      "Principal": {"AWS": "arn:aws:iam::999988887777:role/partner-ingest"},
       "Action": "s3:ListBucket",
       "Resource": "arn:aws:s3:::harborgoods-customer-exports",
       "Condition": {"StringLike": {"s3:prefix": ["partner-a/*"]}}
@@ -23,7 +23,7 @@
     {
       "Sid": "PartnerReadsItsPrefix",
       "Effect": "Allow",
-      "Principal": {"AWS": "arn:aws:iam::111122223333:role/partner-ingest"},
+      "Principal": {"AWS": "arn:aws:iam::999988887777:role/partner-ingest"},
       "Action": "s3:GetObject",
       "Resource": "arn:aws:s3:::harborgoods-customer-exports/partner-a/*"
     }

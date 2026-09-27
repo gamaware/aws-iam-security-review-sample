@@ -24,7 +24,7 @@ MEDIUM   CT-002   trail/management-events: LogFileValidationEnabled false
 MEDIUM   IAM-003  group/PlatformOps via platform-ops: ec2:StopInstances, ec2:TerminateInstances on *
 MEDIUM   IAM-007  user/legacy-reporting: key 1 unused 211 days
 MEDIUM   IAM-007  user/legacy-reporting: key 2 never used
-MEDIUM   S3-002   s3://harborgoods-customer-exports: account 111122223333 allowed s3:*
+MEDIUM   S3-002   s3://harborgoods-customer-exports: account 999988887777 allowed s3:*
 LOW      S3-003   s3://harborgoods-customer-exports: no Deny on aws:SecureTransport false
 LOW      S3-003   s3://harborgoods-trail-logs: no Deny on aws:SecureTransport false
 

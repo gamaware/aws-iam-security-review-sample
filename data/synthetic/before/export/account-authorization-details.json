@@ -4,7 +4,7 @@
       "Path": "/",
       "UserName": "alice.admin",
       "UserId": "AIDAEXAMPLEALICE00001",
-      "Arn": "arn:aws:iam::123456789012:user/alice.admin",
+      "Arn": "arn:aws:iam::111122223333:user/alice.admin",
       "GroupList": ["Admins"],
       "UserPolicyList": [],
       "AttachedManagedPolicies": []
@@ -13,7 +13,7 @@
       "Path": "/",
       "UserName": "bob.ops",
       "UserId": "AIDAEXAMPLEBOBOPS0001",
-      "Arn": "arn:aws:iam::123456789012:user/bob.ops",
+      "Arn": "arn:aws:iam::111122223333:user/bob.ops",
       "GroupList": ["PlatformOps"],
       "UserPolicyList": [],
       "AttachedManagedPolicies": []
@@ -22,7 +22,7 @@
       "Path": "/",
       "UserName": "deploy-bot",
       "UserId": "AIDAEXAMPLEDEPLOY0001",
-      "Arn": "arn:aws:iam::123456789012:user/deploy-bot",
+      "Arn": "arn:aws:iam::111122223333:user/deploy-bot",
       "GroupList": [],
       "UserPolicyList": [
         {
@@ -46,7 +46,7 @@
       "Path": "/",
       "UserName": "legacy-reporting",
       "UserId": "AIDAEXAMPLELEGACY0001",
-      "Arn": "arn:aws:iam::123456789012:user/legacy-reporting",
+      "Arn": "arn:aws:iam::111122223333:user/legacy-reporting",
       "GroupList": [],
       "UserPolicyList": [],
       "AttachedManagedPolicies": [
@@ -62,7 +62,7 @@
       "Path": "/",
       "GroupName": "Admins",
       "GroupId": "AGPAEXAMPLEADMINS0001",
-      "Arn": "arn:aws:iam::123456789012:group/Admins",
+      "Arn": "arn:aws:iam::111122223333:group/Admins",
       "GroupPolicyList": [],
       "AttachedManagedPolicies": [
         {
@@ -75,12 +75,12 @@
       "Path": "/",
       "GroupName": "PlatformOps",
       "GroupId": "AGPAEXAMPLEPLATOPS001",
-      "Arn": "arn:aws:iam::123456789012:group/PlatformOps",
+      "Arn": "arn:aws:iam::111122223333:group/PlatformOps",
       "GroupPolicyList": [],
       "AttachedManagedPolicies": [
         {
           "PolicyName": "platform-ops",
-          "PolicyArn": "arn:aws:iam::123456789012:policy/platform-ops"
+          "PolicyArn": "arn:aws:iam::111122223333:policy/platform-ops"
         }
       ]
     }
@@ -90,14 +90,14 @@
       "Path": "/",
       "RoleName": "ci-deploy",
       "RoleId": "AROAEXAMPLECIDEPLOY01",
-      "Arn": "arn:aws:iam::123456789012:role/ci-deploy",
+      "Arn": "arn:aws:iam::111122223333:role/ci-deploy",
       "AssumeRolePolicyDocument": {
         "Version": "2012-10-17",
         "Statement": [
           {
             "Effect": "Allow",
             "Principal": {
-              "Federated": "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com"
+              "Federated": "arn:aws:iam::111122223333:oidc-provider/token.actions.githubusercontent.com"
             },
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Condition": {
@@ -130,7 +130,7 @@
       "Path": "/aws-service-role/support.amazonaws.com/",
       "RoleName": "AWSServiceRoleForSupport",
       "RoleId": "AROAEXAMPLESUPPORT001",
-      "Arn": "arn:aws:iam::123456789012:role/aws-service-role/support.amazonaws.com/AWSServiceRoleForSupport",
+      "Arn": "arn:aws:iam::111122223333:role/aws-service-role/support.amazonaws.com/AWSServiceRoleForSupport",
       "AssumeRolePolicyDocument": {
         "Version": "2012-10-17",
         "Statement": [
@@ -193,7 +193,7 @@
     },
     {
       "PolicyName": "platform-ops",
-      "Arn": "arn:aws:iam::123456789012:policy/platform-ops",
+      "Arn": "arn:aws:iam::111122223333:policy/platform-ops",
       "Path": "/",
       "DefaultVersionId": "v3",
       "AttachmentCount": 1,

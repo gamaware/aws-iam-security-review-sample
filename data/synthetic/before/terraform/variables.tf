@@ -13,5 +13,5 @@ variable "github_org" {
 variable "partner_account_id" {
   description = "Analytics vendor account granted access to customer exports. Placeholder ID."
   type        = string
-  default     = "111122223333"
+  default     = "999988887777"
 }

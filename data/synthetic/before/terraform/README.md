@@ -48,7 +48,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 | ---- | ----------- | ---- | ------- | :------: |
 | github\_org | GitHub organization allowed to assume the CI role. | `string` | `"harborgoods"` | no |
-| partner\_account\_id | Analytics vendor account granted access to customer exports. Placeholder ID. | `string` | `"111122223333"` | no |
+| partner\_account\_id | Analytics vendor account granted access to customer exports. Placeholder ID. | `string` | `"999988887777"` | no |
 | region | Home region of the fictional account. | `string` | `"us-east-1"` | no |
 
 ## Outputs

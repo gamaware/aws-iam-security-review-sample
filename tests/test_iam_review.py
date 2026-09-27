@@ -52,7 +52,7 @@ def test_not_action_allow_is_treated_as_a_wildcard():
 
 def test_specific_write_on_star_is_medium_and_scoped_resource_is_clean():
     on_star = grant(allow("ec2:TerminateInstances"))
-    scoped = grant(allow("ec2:TerminateInstances", "arn:aws:ec2:*:123456789012:instance/*"))
+    scoped = grant(allow("ec2:TerminateInstances", "arn:aws:ec2:*:111122223333:instance/*"))
     assert ids(check_grants([on_star], humans=set())) == ["IAM-003"]
     assert check_grants([scoped], humans=set()) == []
 
@@ -70,7 +70,7 @@ def test_passrole_on_star(action, expected):
 
 
 def test_passrole_scoped_to_role_path_is_clean():
-    scoped = grant(allow("iam:PassRole", "arn:aws:iam::123456789012:role/app-*"))
+    scoped = grant(allow("iam:PassRole", "arn:aws:iam::111122223333:role/app-*"))
     assert check_grants([scoped], humans=set()) == []
 
 
@@ -145,7 +145,7 @@ def role(trust: dict, path: str = "/") -> dict:
 def oidc_trust(condition: dict | None) -> dict:
     statement = {
         "Effect": "Allow",
-        "Principal": {"Federated": "arn:aws:iam::123456789012:oidc-provider/example"},
+        "Principal": {"Federated": "arn:aws:iam::111122223333:oidc-provider/example"},
         "Action": "sts:AssumeRoleWithWebIdentity",
     }
     if condition:
@@ -297,7 +297,7 @@ def bucket(*statements) -> dict:
 
 def test_anonymous_allow_without_condition_is_critical():
     policy = bucket({"Effect": "Allow", "Principal": "*", "Action": "s3:GetObject"})
-    assert ids(check_bucket_policy("b", policy, "123456789012", set())) == ["S3-001"]
+    assert ids(check_bucket_policy("b", policy, "111122223333", set())) == ["S3-001"]
 
 
 def test_anonymous_allow_with_transport_only_condition_is_still_public():
@@ -307,7 +307,7 @@ def test_anonymous_allow_with_transport_only_condition_is_still_public():
         "Action": "s3:GetObject",
         "Condition": {"Bool": {"aws:SecureTransport": "true"}},
     }
-    findings = check_bucket_policy("b", bucket(statement), "123456789012", set())
+    findings = check_bucket_policy("b", bucket(statement), "111122223333", set())
     assert ids(findings) == ["S3-001"]
 
 
@@ -318,29 +318,29 @@ def test_anonymous_allow_limited_to_the_organization_is_left_to_review():
         "Action": "s3:GetObject",
         "Condition": {"StringEquals": {"aws:PrincipalOrgID": "o-example"}},
     }
-    assert check_bucket_policy("b", bucket(statement), "123456789012", set()) == []
+    assert check_bucket_policy("b", bucket(statement), "111122223333", set()) == []
 
 
 def test_cross_account_principal_must_be_trusted():
     statement = {
         "Effect": "Allow",
-        "Principal": {"AWS": ["arn:aws:iam::111122223333:role/x", "444455556666"]},
+        "Principal": {"AWS": ["arn:aws:iam::999988887777:role/x", "444455556666"]},
         "Action": "s3:GetObject",
     }
-    findings = check_bucket_policy("b", bucket(statement), "123456789012", {"111122223333"})
+    findings = check_bucket_policy("b", bucket(statement), "111122223333", {"999988887777"})
     assert [f.detail.split()[1] for f in findings] == ["444455556666"]
 
 
 def test_service_principals_and_own_account_are_not_cross_account():
     statements = [
         {"Effect": "Allow", "Principal": {"Service": "cloudtrail.amazonaws.com"}, "Action": "*"},
-        {"Effect": "Allow", "Principal": {"AWS": "arn:aws:iam::123456789012:root"}, "Action": "*"},
+        {"Effect": "Allow", "Principal": {"AWS": "arn:aws:iam::111122223333:root"}, "Action": "*"},
     ]
-    assert check_bucket_policy("b", bucket(*statements), "123456789012", set()) == []
+    assert check_bucket_policy("b", bucket(*statements), "111122223333", set()) == []
 
 
 def test_missing_tls_deny_is_low():
-    findings = check_bucket_policy("b", {"Statement": []}, "123456789012", set())
+    findings = check_bucket_policy("b", {"Statement": []}, "111122223333", set())
     assert ids(findings) == ["S3-003"]
     assert findings[0].severity == "LOW"
 

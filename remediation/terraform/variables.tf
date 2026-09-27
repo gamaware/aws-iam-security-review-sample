@@ -18,7 +18,7 @@ variable "github_repository" {
 variable "partner_role_arn" {
   description = "Role in the approved analytics partner account that reads its export prefix. Placeholder ID."
   type        = string
-  default     = "arn:aws:iam::111122223333:role/partner-ingest"
+  default     = "arn:aws:iam::999988887777:role/partner-ingest"
 }
 
 variable "release_bucket_name" {

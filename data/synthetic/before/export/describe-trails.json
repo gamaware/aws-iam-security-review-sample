@@ -10,7 +10,7 @@
       "LogFileValidationEnabled": false,
       "HasCustomEventSelectors": false,
       "IsLogging": true,
-      "TrailARN": "arn:aws:cloudtrail:us-east-1:123456789012:trail/management-events"
+      "TrailARN": "arn:aws:cloudtrail:us-east-1:111122223333:trail/management-events"
     }
   ]
 }
