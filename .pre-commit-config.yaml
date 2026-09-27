@@ -23,6 +23,13 @@ repos:
       - id: terraform_fmt
       - id: terraform_validate
         args: [--hook-config=--retry-once-with-cleanup=true]
+      - id: terraform_tflint
+      - id: terraform_docs
+        args:
+          - --hook-config=--path-to-file=README.md
+          - --hook-config=--add-to-existing-file=true
+          - --hook-config=--create-file-if-not-exist=true
+          - --args=--config=.terraform-docs.yml
 
   # The before account in data/synthetic/before is vulnerable on purpose; the gate applies to the remediated code.
   # `make checkov` checks that the sample still fails with exactly the reported checks.
@@ -42,6 +49,26 @@ repos:
     hooks:
       - id: zizmor
         args: [--offline]
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: 01886c8a910c64595c47f186ca1ffc0b77fa5458  # frozen: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: [--baseline, .secrets.baseline]
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: 745eface02aef23e168a8afb6b5737818efbea95  # frozen: v0.11.0.1
+    hooks:
+      - id: shellcheck
+        args: [--severity=warning]
+
+  - repo: local
+    hooks:
+      - id: shellharden
+        name: shellharden
+        entry: shellharden --check
+        language: system
+        types: [shell]
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: 6eaad039603a4de39fddd1cf5f727391efe9974e  # frozen: v8.30.0

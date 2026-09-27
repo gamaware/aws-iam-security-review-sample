@@ -1,0 +1,8 @@
+[extend]
+useDefault = true
+
+# The detect-secrets baseline stores SHA-1 hashes of reviewed false positives (commit SHAs in
+# .pre-commit-config.yaml), not secrets.
+[[allowlists]]
+description = "detect-secrets baseline hashes"
+paths = ['''^\.secrets\.baseline$''']
