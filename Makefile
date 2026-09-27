@@ -1,4 +1,5 @@
-# Every target runs offline: no AWS account, no credentials.
+# Every target except test-live runs offline: no AWS account, no credentials.
+# CI calls `make verify`, so a green local run means a green pipeline.
 
 SHELL := bash
 .SHELLFLAGS := -o pipefail -c
@@ -14,7 +15,7 @@ BEFORE := data/synthetic/before
 AFTER := data/synthetic/after
 TF_ROOTS := $(BEFORE)/terraform remediation/terraform
 
-.PHONY: verify test review checkov terraform evidence evidence-check report clean
+.PHONY: verify test review checkov terraform evidence evidence-check report test-live clean
 
 verify: test review checkov terraform evidence-check
 	@echo "make verify: all offline checks passed"
@@ -72,6 +73,11 @@ report: | $(BUILD)
 	  --metadata title="AWS IAM and security configuration review" \
 	  --output $(BUILD)/REPORT.pdf
 	@echo "wrote $(BUILD)/REPORT.pdf"
+
+# Optional, manual, never run in CI. Asks IAM Access Analyzer and the IAM policy simulator to
+# judge the remediated policies; creates no resources. See docs/methodology.md.
+test-live:
+	scripts/test-live.sh
 
 $(BUILD):
 	mkdir -p $@

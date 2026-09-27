@@ -390,3 +390,8 @@ The remediated state is in [`remediation/`](../remediation/) and [`data/syntheti
 | S3-003 | Low | Bucket policy has no deny for `aws:SecureTransport = false` |
 | CT-001 | High | No multi-region trail that is logging |
 | CT-002 | Medium | Trail without log file validation |
+
+---
+
+*Sample deliverable for Harbor Goods, a fictional company. Account IDs are AWS documentation examples; no real
+organization, person or account is described.*

@@ -68,3 +68,17 @@ def test_rewrites_never_allow_wildcard_actions_on_everything(policy_file):
             statement["Action"] if isinstance(statement["Action"], list) else [statement["Action"]]
         )
         assert not any(a == "*" or a.endswith(":*") for a in actions), statement["Sid"]
+
+
+SCPS = REPO / "remediation" / "scps"
+
+
+@pytest.mark.parametrize("scp_file", sorted(p.name for p in SCPS.glob("*.json")))
+def test_scps_only_deny_and_fit_the_size_limit(scp_file):
+    raw = (SCPS / scp_file).read_text()
+    document = json.loads(raw)
+    sids = [s["Sid"] for s in document["Statement"]]
+    assert all(s["Effect"] == "Deny" for s in document["Statement"])
+    assert len(sids) == len(set(sids))
+    # AWS Organizations limits an SCP to 5,120 characters, whitespace included.
+    assert len(raw) <= 5120
