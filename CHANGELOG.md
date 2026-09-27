@@ -30,7 +30,3 @@ rather than Semantic Versioning.
 - Moved to the portfolio's sample-deliverable layout (`report/`, `evidence/`, `data/synthetic/`, `scripts/`,
   `tests/`, `remediation/`) and renamed the fictional client to Harbor Goods.
 - Contribution guide and issue and pull request templates are now inherited from `gamaware/.github`.
-
-### To do
-
-- Re-pin the `gamaware/.github` workflow calls if its first pull request merges under a different commit SHA.
