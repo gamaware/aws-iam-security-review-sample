@@ -92,7 +92,7 @@ Terraform fmt and validate, and a check that the evidence is reproducible. Its f
 
 ```text
 evidence/ matches a fresh run
-make verify: all offline checks passed
+verify: all checks passed
 ```
 
 Allow about two minutes for the initial run. Most of that time goes to fetching Checkov through `uvx` and

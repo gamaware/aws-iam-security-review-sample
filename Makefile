@@ -18,7 +18,7 @@ TF_ROOTS := $(BEFORE)/terraform remediation/terraform
 .PHONY: verify test review checkov terraform evidence evidence-check report test-live clean
 
 verify: test review checkov terraform evidence-check
-	@echo "make verify: all offline checks passed"
+	@echo "verify: all checks passed"
 
 test:
 	$(PYTHON) -m pytest
