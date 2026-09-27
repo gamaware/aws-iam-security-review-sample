@@ -13,7 +13,7 @@
       "Action": "*",
       "Resource": "*",
       "Condition": {
-        "StringLike": {
+        "ArnLike": {
           "aws:PrincipalArn": "arn:aws:iam::*:root"
         }
       }
