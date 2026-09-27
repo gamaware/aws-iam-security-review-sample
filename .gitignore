@@ -32,3 +32,6 @@ build/
 
 # Rendered report (built in CI, never committed)
 *.pdf
+
+# Vale packages (vale sync)
+styles/

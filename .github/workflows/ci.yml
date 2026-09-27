@@ -44,43 +44,6 @@ jobs:
       - name: Tests, reviews, Checkov gates, Terraform and evidence reproducibility
         run: make verify
 
-  # Builds the client PDF from report/REPORT.md (ADR 0005). Kept in this repository until the
-  # shared report workflow's inputs are settled.
-  report:
-    name: Report PDF
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - uses: typst-community/setup-typst@40d32bb6ccb235bd7f5164cb47cfd40a5ea3a314 # v5.2.0
-        with:
-          typst-version: "0.15.1"
-
-      # Ubuntu's pandoc 3.1 template does not work with current typst; install a pinned release.
-      - name: Install pandoc 3.11
-        env:
-          PANDOC_DEB: pandoc-3.11-1-amd64.deb
-          PANDOC_SHA256: 89d4c9d97818c62a97157f0072844e4602c6cee795bf84abd1aee7273abcda99
-        run: |
-          curl -sSfLO "https://github.com/jgm/pandoc/releases/download/3.11/$PANDOC_DEB"
-          echo "$PANDOC_SHA256  $PANDOC_DEB" | sha256sum --check
-          sudo dpkg -i "$PANDOC_DEB"
-
-      - name: Render the report
-        run: make report
-
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: REPORT
-          path: build/REPORT.pdf
-          if-no-files-found: error
-          retention-days: 30
-
   hygiene:
     name: pre-commit hooks
     runs-on: ubuntu-latest
@@ -118,28 +81,41 @@ jobs:
           SKIP: no-commit-to-branch,terraform_validate,checkov
         run: uvx pre-commit==4.3.0 run --all-files --show-diff-on-failure
 
+  # Shared jobs from gamaware/.github, pinned by commit SHA. They get read-only contents and
+  # no secrets.
   lint-docs:
-    name: lint-docs
     permissions:
       contents: read
-    uses: gamaware/.github/.github/workflows/lint-docs.yml@main
+    uses: gamaware/.github/.github/workflows/lint-docs.yml@1255caafb08b06cc4658318c4dd48f9dea946c9e
 
   lint-actions:
-    name: lint-actions
     permissions:
       contents: read
-    uses: gamaware/.github/.github/workflows/lint-actions.yml@main
+    uses: gamaware/.github/.github/workflows/lint-actions.yml@1255caafb08b06cc4658318c4dd48f9dea946c9e
 
   secrets:
-    name: secrets
     permissions:
       contents: read
-    uses: gamaware/.github/.github/workflows/secrets.yml@main
+    uses: gamaware/.github/.github/workflows/secrets.yml@1255caafb08b06cc4658318c4dd48f9dea946c9e
 
+  # Semgrep honors .semgrepignore, Checkov reads .github/checkov-ci.yaml and Trivy gets
+  # trivy-skip-dirs; each leaves out only the intentionally insecure before fixture, whose
+  # findings `make verify` asserts (ADR 0004). The Checkov file is not at the root, where
+  # Checkov would load it automatically and hide the before findings from `make checkov`.
   security:
-    name: security
     permissions:
       contents: read
-      security-events: write
-      actions: read
-    uses: gamaware/.github/.github/workflows/security.yml@main
+    uses: gamaware/.github/.github/workflows/security.yml@1255caafb08b06cc4658318c4dd48f9dea946c9e
+    with:
+      trivy-skip-dirs: data/synthetic/before
+      checkov-config: .github/checkov-ci.yaml
+
+  # Renders report/REPORT.md with the control map as its appendix (ADR 0005).
+  report:
+    permissions:
+      contents: read
+    uses: gamaware/.github/.github/workflows/report.yml@1255caafb08b06cc4658318c4dd48f9dea946c9e
+    with:
+      report-path: report/REPORT.md
+      pandoc-args: control-evidence-map.md --pdf-engine=xelatex -V geometry:margin=2.2cm --toc
+      artifact-name: REPORT

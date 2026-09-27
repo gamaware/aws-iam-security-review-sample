@@ -1,8 +1,0 @@
-rules:
-  unpinned-uses:
-    config:
-      policies:
-        # Shared workflows are called at @main until they are re-pinned to a reviewed SHA
-        # (see CHANGELOG "To do"). Every other action is pinned by full commit SHA.
-        "gamaware/*": ref-pin
-        "*": hash-pin

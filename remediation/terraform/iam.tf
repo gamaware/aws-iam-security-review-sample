@@ -31,8 +31,10 @@ resource "aws_iam_policy" "platform_ops" {
         Resource = "arn:aws:iam::${local.account_id}:role/*"
       },
       {
-        Sid      = "PassOnlyAppRolesToEc2WithMfa"
-        Effect   = "Allow"
+        Sid    = "PassOnlyAppRolesToEc2WithMfa"
+        Effect = "Allow"
+        # PassRole is the point of this statement (F-05): limited to app-* roles, EC2 and MFA.
+        # nosemgrep: terraform.lang.security.iam.no-iam-resource-exposure.no-iam-resource-exposure
         Action   = "iam:PassRole"
         Resource = "arn:aws:iam::${local.account_id}:role/app-*"
         Condition = {
@@ -135,8 +137,11 @@ resource "aws_iam_role_policy" "ci_deploy" {
         Resource = "arn:aws:s3:::${var.release_bucket_name}/reporting-app/*"
       },
       {
-        Sid      = "DeployOneFunction"
-        Effect   = "Allow"
+        Sid    = "DeployOneFunction"
+        Effect = "Allow"
+        # Accepted risk: new code runs with this one function's execution role (outside this review).
+        # The CI role has no iam:PassRole, so it cannot give the function a different role.
+        # nosemgrep: terraform.lang.security.iam.no-iam-priv-esc-roles.no-iam-priv-esc-roles
         Action   = ["lambda:GetFunction", "lambda:UpdateFunctionCode", "lambda:PublishVersion"]
         Resource = "arn:aws:lambda:${var.region}:${local.account_id}:function:${var.lambda_function_name}"
       },

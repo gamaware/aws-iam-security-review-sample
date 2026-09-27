@@ -72,6 +72,8 @@ resource "aws_s3_bucket_versioning" "access_logs" {
   }
 }
 
+# S3 server access log delivery requires SSE-S3 on the target bucket (same reason as CKV_AWS_145).
+#trivy:ignore:AWS-0132
 resource "aws_s3_bucket_server_side_encryption_configuration" "access_logs" {
   bucket = aws_s3_bucket.access_logs.id
   rule {
