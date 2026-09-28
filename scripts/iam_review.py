@@ -89,7 +89,9 @@ CALLER_KEYS = (
     "aws:sourcevpce",
 )
 ROOT_USER = "<root_account>"
-ACCOUNT_IN_ARN = re.compile(r"^arn:aws[\w-]*:iam::(\d{12}):")
+ACCOUNT_IN_ARN = re.compile(r"^arn:aws[\w-]*:(?:iam|sts)::(\d{12}):")
+# Caller-key values that match every caller, so they narrow nothing.
+UNBOUNDED_VALUES = {"*", "0.0.0.0/0", "::/0"}
 BARE_ACCOUNT = re.compile(r"^\d{12}$")
 
 
@@ -174,7 +176,19 @@ def requires_mfa(statement: dict) -> bool:
 
 
 def restricts_caller(statement: dict) -> bool:
-    return any(key in CALLER_KEYS for pairs in conditions(statement).values() for key in pairs)
+    """True when a positive caller condition limits who matches the statement.
+
+    Negated operators (StringNotEquals, NotIpAddress, ...) only exclude some callers, and
+    a value such as "*" or 0.0.0.0/0 anywhere in the list matches everyone, so neither counts.
+    """
+    for operator, pairs in conditions(statement).items():
+        if "not" in operator:
+            continue
+        for key, values in pairs.items():
+            bounded = values and all(str(v) not in UNBOUNDED_VALUES for v in values)
+            if key in CALLER_KEYS and bounded:
+                return True
+    return False
 
 
 def denies_without_mfa(statement: dict) -> bool:
@@ -305,9 +319,18 @@ def check_grants(grants: list[Grant], humans: set[str]) -> list[Finding]:
 
 
 def guarded(principal: str, action: str, guardrails: list[Grant]) -> bool:
-    """True when a Deny-without-MFA statement on the same principal covers the action."""
+    """True when an account-wide Deny-without-MFA statement on the same principal covers the action.
+
+    A guardrail scoped to some resources, or narrowed by any condition besides the MFA one,
+    leaves the action open elsewhere, so it does not count.
+    """
     for guard in guardrails:
         if guard.principal != principal:
+            continue
+        if "NotResource" in guard.statement or "*" not in as_list(guard.statement.get("Resource")):
+            continue
+        conds = conditions(guard.statement)
+        if list(conds) != ["boolifexists"] or len(conds["boolifexists"]) != 1:
             continue
         if "NotAction" in guard.statement:
             excluded = as_list(guard.statement["NotAction"])
@@ -336,9 +359,11 @@ def check_role_trust(details: dict) -> list[Finding]:
             for federated in as_list((principal or {}).get("Federated")):
                 if "saml-provider" in federated:
                     continue
+                # Negated operators exclude some subjects and pin none, so they do not count.
                 subs = [
                     (operator, str(v))
                     for operator, pairs in conditions(statement).items()
+                    if "not" not in operator
                     for key, values in pairs.items()
                     if key.endswith(":sub")
                     for v in values
@@ -497,6 +522,10 @@ def review(export_dir: Path, as_of: datetime | None = None) -> list[Finding]:
     trusted = set(scope.get("trusted_account_ids", []))
     max_age = int(scope.get("key_max_age_days", 90))
     snapshot = as_of or parse_time(scope["snapshot_time"])
+    if snapshot is None:
+        raise ExportError("review-scope.json: snapshot_time is empty")
+    if snapshot.tzinfo is None:
+        snapshot = snapshot.replace(tzinfo=UTC)
 
     details = load_json(export_dir / "account-authorization-details.json")
     grants, humans = principal_grants(details, default_policy_versions(details))
@@ -506,7 +535,10 @@ def review(export_dir: Path, as_of: datetime | None = None) -> list[Finding]:
         load_credential_report(export_dir / "credential-report.csv"), snapshot, max_age
     )
     findings += check_trails(load_json(export_dir / "describe-trails.json")["trailList"])
-    for path in sorted((export_dir / "bucket-policies").glob("*.json")):
+    policy_dir = export_dir / "bucket-policies"
+    if not policy_dir.is_dir():
+        raise ExportError(f"missing export directory: {policy_dir}")
+    for path in sorted(policy_dir.glob("*.json")):
         findings += check_bucket_policy(path.stem, load_json(path), own_account, trusted)
     return sorted(set(findings))
 
@@ -539,7 +571,9 @@ def main(argv: list[str] | None = None) -> int:
         if as_of and as_of.tzinfo is None:
             as_of = as_of.replace(tzinfo=UTC)
         findings = review(args.export_dir, as_of)
-    except (ExportError, KeyError, ValueError) as err:
+    except (ExportError, KeyError, ValueError, TypeError, AttributeError) as err:
+        # Wrong-shaped export data surfaces as KeyError, TypeError or AttributeError; all of
+        # them are bad input (exit 2), never findings (exit 1).
         print(f"error: {err}", file=sys.stderr)
         return 2
 

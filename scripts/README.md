@@ -31,7 +31,8 @@ To produce an export from a real account you are authorized to review, with read
 ```bash
 mkdir -p export/bucket-policies
 aws iam get-account-authorization-details > export/account-authorization-details.json
-aws iam generate-credential-report && sleep 10
+# Generation is asynchronous; poll until the report is COMPLETE
+until [ "$(aws iam generate-credential-report --query State --output text)" = COMPLETE ]; do sleep 5; done
 aws iam get-credential-report --query Content --output text | base64 --decode > export/credential-report.csv
 aws cloudtrail describe-trails > export/describe-trails.json   # add IsLogging from get-trail-status per trail
 aws s3api get-bucket-policy --bucket BUCKET --query Policy --output text > export/bucket-policies/BUCKET.json

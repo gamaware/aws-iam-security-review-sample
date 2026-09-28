@@ -41,7 +41,12 @@ def main(argv: list[str] | None = None) -> int:
         print("\n".join(lines))
         return 0
 
-    expected = [line for line in args.expect.read_text(encoding="utf-8").splitlines() if line]
+    try:
+        expected_text = args.expect.read_text(encoding="utf-8")
+    except OSError as err:
+        print(f"error: cannot read expected lines {args.expect}: {err}", file=sys.stderr)
+        return 2
+    expected = [line for line in expected_text.splitlines() if line]
     missing = sorted(set(expected) - set(lines))
     unexpected = sorted(set(lines) - set(expected))
     for line in missing:

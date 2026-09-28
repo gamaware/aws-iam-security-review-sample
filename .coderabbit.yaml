@@ -10,7 +10,7 @@ reviews:
         remediation/ and data/synthetic/after/. Flag only real account IDs, names or secrets.
     - path: "remediation/**"
       instructions: >
-        Least-privilege fixes. Flag wildcard actions or resources, missing conditions, trust
+        Scoped-access fixes. Flag wildcard actions or resources, missing conditions, trust
         policies wider than one repository and environment, and any drift between
         remediation/policies/*.json and the Terraform.
     - path: "evidence/**"

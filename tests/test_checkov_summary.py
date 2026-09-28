@@ -49,3 +49,11 @@ def test_unreadable_report_exits_2(tmp_path, capsys):
     bad.write_text("not json")
     assert checkov_summary.main([str(bad)]) == 2
     assert "cannot read Checkov report" in capsys.readouterr().err
+
+
+def test_missing_expect_file_is_bad_input(tmp_path, capsys):
+    path = tmp_path / "checkov.json"
+    path.write_text(json.dumps(report(("A", "r1"))))
+    missing = tmp_path / "missing.txt"
+    assert checkov_summary.main([str(path), "--expect", str(missing)]) == 2
+    assert "cannot read expected lines" in capsys.readouterr().err
