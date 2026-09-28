@@ -36,6 +36,15 @@ resource "aws_iam_policy" "platform_ops" {
         ]
       },
       {
+        # The console's Security credentials page lists virtual MFA devices before it can
+        # assign one. The action does not support resource-level permissions, so it stays on
+        # "*" in its own statement, as in AWS's self-manage-credentials example policy.
+        Sid      = "ListVirtualMfaDevices"
+        Effect   = "Allow"
+        Action   = "iam:ListVirtualMFADevices"
+        Resource = "*"
+      },
+      {
         Sid      = "ListRoles"
         Effect   = "Allow"
         Action   = "iam:ListRoles"

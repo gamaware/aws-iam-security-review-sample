@@ -39,6 +39,9 @@ rather than Semantic Versioning.
   principals are attributed to their account; a snapshot time without an offset is read as UTC; a missing
   `bucket-policies/` directory or a wrong-shaped export is bad input (exit 2), not a clean or failed review.
 - `checkov_summary.py`: a missing `--expect` file is bad input (exit 2).
-- `platform-ops` rewrite lets members enroll their own MFA device, which the require-MFA guardrail expects.
+- `platform-ops` rewrite lets members enroll their own MFA device, which the require-MFA guardrail expects,
+  including `iam:ListVirtualMFADevices`, which the console's Security credentials page needs.
+- `scripts/README.md`: the credential report polling loop stops on a failed AWS CLI call and gives up after a
+  bounded number of attempts instead of retrying forever.
 - `partner_role_arn` accepts one role ARN only; the consistency test compares statement contents with Terraform,
   not only Sids.

@@ -154,6 +154,12 @@
                 ]
               },
               {
+                "Sid": "ListVirtualMfaDevices",
+                "Effect": "Allow",
+                "Action": "iam:ListVirtualMFADevices",
+                "Resource": "*"
+              },
+              {
                 "Sid": "ListRoles",
                 "Effect": "Allow",
                 "Action": "iam:ListRoles",
