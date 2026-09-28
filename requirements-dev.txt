@@ -1,0 +1,2 @@
+# The checks use the standard library only; pytest is needed for the test suite.
+pytest==8.4.2

@@ -1,0 +1,8 @@
+formatter: markdown table
+settings:
+  anchor: false
+  html: false
+  lockfile: false
+sort:
+  enabled: true
+  by: required
