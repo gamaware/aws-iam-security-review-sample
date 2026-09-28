@@ -1,6 +1,6 @@
 # FICTIONAL account. This configuration exists to be reviewed, never applied.
 terraform {
-  required_version = ">= 1.10.0"
+  required_version = ">= 1.11.0, < 2.0.0"
 
   required_providers {
     aws = {

@@ -7,7 +7,7 @@ The client's Terraform as handed over. Never apply it; the fixes are in `remedia
 
 | Name | Version |
 | ---- | ------- |
-| terraform | >= 1.10.0 |
+| terraform | >= 1.11.0, < 2.0.0 |
 | aws | ~> 6.0 |
 
 ## Providers
