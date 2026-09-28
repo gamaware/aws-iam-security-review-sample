@@ -1,4 +1,4 @@
-# ADR 0004: Gate the remediated code; assert the before state still fails
+# 0004. Gate the remediated code; assert the before state still fails
 
 ## Status
 

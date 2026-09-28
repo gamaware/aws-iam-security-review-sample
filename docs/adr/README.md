@@ -1,10 +1,10 @@
-# Architecture Decision Records
+# Architecture decision records
 
-Format: *Fundamentals of Software Architecture*, 2nd edition, chapter 21: title, status, context, decision,
-consequences, compliance and notes. Each Compliance section says how the decision is checked, automatically where
-possible.
+Architecture decision records follow the *Fundamentals of Software Architecture* (2nd ed.) format: title, status,
+context, decision, consequences, compliance and notes. Each Compliance section says how the decision is checked,
+automatically where possible.
 
-| ADR | Title | Status |
+| Number | Title | Status |
 | --- | --- | --- |
 | [0001](0001-review-offline-exports.md) | Review read-only exports offline, not the live account | Accepted |
 | [0002](0002-stdlib-checker-alongside-checkov.md) | A stdlib-only Python checker alongside Checkov | Accepted |

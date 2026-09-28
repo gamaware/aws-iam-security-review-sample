@@ -1,4 +1,4 @@
-# ADR 0003: The SOC 2 deliverable is an evidence map, not an opinion
+# 0003. The SOC 2 deliverable is an evidence map, not an opinion
 
 ## Status
 

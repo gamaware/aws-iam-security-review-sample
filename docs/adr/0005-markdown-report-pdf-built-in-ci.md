@@ -1,4 +1,4 @@
-# ADR 0005: Markdown is the canonical report; the shared pipeline builds the PDF
+# 0005. Markdown is the canonical report; the shared pipeline builds the PDF
 
 ## Status
 

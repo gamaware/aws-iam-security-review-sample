@@ -1,4 +1,4 @@
-# ADR 0001: Review read-only exports offline, not the live account
+# 0001. Review read-only exports offline, not the live account
 
 ## Status
 

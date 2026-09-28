@@ -1,4 +1,4 @@
-# ADR 0002: A stdlib-only Python checker alongside Checkov
+# 0002. A stdlib-only Python checker alongside Checkov
 
 ## Status
 
