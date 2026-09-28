@@ -1,17 +1,18 @@
 # AWS IAM security review: sample deliverable
 
-This least-privilege IAM and security review covers one AWS account. Each finding has a risk ranking,
-reproducible evidence and a fix expressed as code.
+An AWS security and IAM review with ranked findings, reproducible evidence and fixes expressed as code.
 
-[![ci](https://github.com/gamaware/aws-iam-security-review-sample/actions/workflows/ci.yml/badge.svg)](https://github.com/gamaware/aws-iam-security-review-sample/actions/workflows/ci.yml)
+[![CI](https://github.com/gamaware/aws-iam-security-review-sample/actions/workflows/ci.yml/badge.svg)](https://github.com/gamaware/aws-iam-security-review-sample/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-![Fictional sample](https://img.shields.io/badge/fictional-sample-lightgrey)
+![Fictional sample](https://img.shields.io/badge/fictional-sample-5b6b7f)
 
-![AWS security review with least-privilege IAM fixes](docs/assets/cover.png)
+![AWS security and IAM review](docs/assets/cover.png)
 
-> **This repository contains only fictional material.** The invented mid-size retailer Harbor Goods uses
-> AWS documentation example account ID `111122223333`; its analytics vendor uses example ID `999988887777`.
-> The Terraform under `data/synthetic/before/` contains deliberate security weaknesses. Never apply it.
+> **Fictional sample.** Harbor Goods and all data here are fictional. Each repository in this portfolio is a
+> separate engagement with Harbor Goods, a fictional mid-size retailer. Account IDs are AWS documentation examples.
+
+The Harbor Goods production account is `111122223333`; its analytics vendor uses `999988887777`. The Terraform under
+`data/synthetic/before/` contains deliberate security weaknesses. Never apply it.
 
 ## Executive summary
 
@@ -78,7 +79,7 @@ number. The draw.io source files for the diagrams reside in [`docs/diagrams/`](d
 ## Verify locally
 
 Running the toolkit requires Python 3.11 or newer (3.13 in CI), [uv](https://docs.astral.sh/uv/) for pinned Checkov
-3.3.19, Terraform 1.10 or newer (1.14.5 in CI), and `make`. Neither an AWS account nor credentials are required.
+3.3.19, Terraform 1.11 or newer (1.14.5 in CI), and `make`. Neither an AWS account nor credentials are required.
 
 ```bash
 git clone https://github.com/gamaware/aws-iam-security-review-sample.git
@@ -117,7 +118,9 @@ docs/              methodology, ADRs, diagrams, cover image
 
 ## Decisions and trade-offs
 
-| ADR | Title | Status |
+Architecture decision records follow the *Fundamentals of Software Architecture* (2nd ed.) format.
+
+| Number | Title | Status |
 | --- | --- | --- |
 | [0001](docs/adr/0001-review-offline-exports.md) | Review read-only exports offline, not the live account | Accepted |
 | [0002](docs/adr/0002-stdlib-checker-alongside-checkov.md) | A stdlib-only Python checker alongside Checkov | Accepted |
@@ -157,10 +160,9 @@ Checks assert the deliberately insecure fixtures as expected findings; they neve
 ## Related work
 
 This repository belongs to the [AWS DevOps portfolio](https://github.com/gamaware/aws-devops-portfolio) and supports
-the "AWS security review with least-privilege IAM fixes" service, offered through
-[Alex Garcia on Upwork](https://www.upwork.com/freelancers/~014b3520cf9e140103). The method is the one Alex Garcia
-uses in audits for ITESO and freelance clients in Guadalajara. All findings in this example were invented for
-Harbor Goods.
+the [AWS security and IAM review on Upwork](https://www.upwork.com/freelancers/~014b3520cf9e140103) service. The
+method is the one Alex uses in audits for ITESO and freelance clients in Guadalajara. All findings in this example
+were invented for Harbor Goods.
 
 The repository uses the [MIT](LICENSE) license and inherits its contribution, support and security policies from
 [gamaware/.github](https://github.com/gamaware/.github). Additional information appears in

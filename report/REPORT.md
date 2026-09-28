@@ -1,7 +1,8 @@
 # AWS IAM and security configuration review
 
 > **This sample covers a FICTIONAL client, Harbor Goods, a mid-size retailer with account `111122223333`.**
-> No company, individual or account represented here is real. The repository files reproduce all findings below
+> No company, individual or account represented here is real. Each repository in this portfolio is a separate
+> engagement with Harbor Goods, a fictional mid-size retailer. The repository files reproduce all findings below
 > through `make verify`.
 
 | Item | Value |
