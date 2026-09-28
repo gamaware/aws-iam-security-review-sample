@@ -1,0 +1,18 @@
+{
+  "trailList": [
+    {
+      "Name": "management-events",
+      "S3BucketName": "harborgoods-trail-logs",
+      "HomeRegion": "us-east-1",
+      "IsMultiRegionTrail": true,
+      "IsOrganizationTrail": false,
+      "IncludeGlobalServiceEvents": true,
+      "LogFileValidationEnabled": true,
+      "KmsKeyId": "arn:aws:kms:us-east-1:111122223333:key/00000000-0000-0000-0000-000000000000",
+      "CloudWatchLogsLogGroupArn": "arn:aws:logs:us-east-1:111122223333:log-group:/aws/cloudtrail/management-events:*",
+      "HasCustomEventSelectors": false,
+      "IsLogging": true,
+      "TrailARN": "arn:aws:cloudtrail:us-east-1:111122223333:trail/management-events"
+    }
+  ]
+}

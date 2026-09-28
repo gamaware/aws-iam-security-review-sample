@@ -1,0 +1,37 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+crash.*.log
+*.tfplan
+
+# Secrets
+.env
+.env.local
+*.pem
+*.key
+credentials.json
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# Local build output
+build/
+
+# Tools
+.firecrawl/
+.DS_Store
+
+# PDFs; only the rendered report is committed (ADR 0005)
+*.pdf
+!report/REPORT.pdf
+
+# Vale packages (vale sync)
+styles/

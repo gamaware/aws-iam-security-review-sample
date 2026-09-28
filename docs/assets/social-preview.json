@@ -1,0 +1,11 @@
+{
+  "color": "#232F3E",
+  "heading": ["AWS security review", "with least-privilege", "IAM fixes"],
+  "subtitle": "fictional sample · evidence-backed · fixes as code",
+  "steps": [
+    {"label": "Read-only exports"},
+    {"label": "Findings ranked by risk"},
+    {"label": "Fixes and re-scan"}
+  ],
+  "illustration": "social-preview-illustration.svg"
+}

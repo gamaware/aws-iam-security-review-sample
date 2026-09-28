@@ -1,0 +1,307 @@
+<mxfile host="Electron" version="29.6.1">
+  <diagram name="review-pipeline" id="review-pipeline">
+    <mxGraphModel dx="2180" dy="960" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="2180" pageHeight="960" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title-group" value="" style="group;fontFamily=Helvetica;" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="40" y="30" width="1880" height="83" as="geometry" />
+        </mxCell>
+        <mxCell id="title-text" value="IAM security review: evidence pipeline" style="text;html=1;resizable=1;points=[];autosize=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=30;fontStyle=1;fontFamily=Helvetica;" vertex="1" parent="title-group">
+          <mxGeometry x="0" y="0" width="1870" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle-text" value="How every number in the report is produced and re-checked offline" style="text;html=1;resizable=0;points=[];autosize=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=16;fontFamily=Helvetica;" vertex="1" parent="title-group">
+          <mxGeometry x="5" y="40" width="1870" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="title-separator" value="" style="line;strokeWidth=2;html=1;fontSize=14;strokeColor=#FF9900;fontFamily=Helvetica;" vertex="1" parent="title-group">
+          <mxGeometry x="5" y="70" width="1870" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="grp-in-export" value="Input: exports" style="fillColor=#E8F5E9;strokeColor=#3F8624;rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=12;fontColor=#3F8624;container=1;collapsible=0;shadow=1;strokeWidth=1.5;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="in-export" value="data/synthetic/before/export&lt;div&gt;&lt;i&gt;JSON/CSV exports&lt;/i&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#3F8624;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.documents;fontFamily=Helvetica;" vertex="1" parent="grp-in-export">
+          <mxGeometry x="76" y="40" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="grp-in-tf" value="Input: Terraform" style="fillColor=#E8F5E9;strokeColor=#3F8624;rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=12;fontColor=#3F8624;container=1;collapsible=0;shadow=1;strokeWidth=1.5;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="400" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="in-tf" value="data/synthetic/before/terraform&lt;div&gt;&lt;i&gt;Terraform&lt;/i&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=none;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=image;image=data:image/svg+xml,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRpdGxlPlRlcnJhZm9ybTwvdGl0bGU+PHBhdGggZmlsbD0iIzg0NEZCQSIgZD0iTTEuNDQgMHY3LjU3NWw2LjU2MSAzLjc5VjMuNzg3em0yMS4xMiA0LjIyN2wtNi41NjEgMy43OTF2Ny41NzRsNi41Ni0zLjc4N3pNOC43MiA0LjIzdjcuNTc1bDYuNTYxIDMuNzg3VjguMDE4em0wIDguNDA1djcuNTc1TDE1LjI4IDI0di03LjU3OHoiLz48L3N2Zz4=;imageAspect=0;fontFamily=Helvetica;" vertex="1" parent="grp-in-tf">
+          <mxGeometry x="76" y="40" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="grp-iam-review" value="IAM checks" style="fillColor=#FFF2E8;strokeColor=#ED7100;rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=12;fontColor=#ED7100;container=1;collapsible=0;shadow=1;strokeWidth=1.5;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="330" y="200" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="iam-review" value="scripts/iam_review.py&lt;div&gt;&lt;i&gt;17 checks, stdlib&lt;/i&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.generic_application;fontFamily=Helvetica;" vertex="1" parent="grp-iam-review">
+          <mxGeometry x="76" y="40" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="grp-checkov" value="Terraform scan" style="fillColor=#FFEBEE;strokeColor=#DD344C;rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=12;fontColor=#DD344C;container=1;collapsible=0;shadow=1;strokeWidth=1.5;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="330" y="400" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="checkov" value="Checkov 3.3.19&lt;div&gt;&lt;i&gt;policy-as-code scan&lt;/i&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#DD344C;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.checklist_security;fontFamily=Helvetica;" vertex="1" parent="grp-checkov">
+          <mxGeometry x="76" y="40" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="grp-ck-summary" value="Gate" style="fillColor=#FFF2E8;strokeColor=#ED7100;rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=12;fontColor=#ED7100;container=1;collapsible=0;shadow=1;strokeWidth=1.5;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="620" y="400" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="ck-summary" value="scripts/checkov_summary.py&lt;div&gt;&lt;i&gt;expected-failures gate&lt;/i&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.generic_application;fontFamily=Helvetica;" vertex="1" parent="grp-ck-summary">
+          <mxGeometry x="76" y="40" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="grp-evidence" value="Evidence" style="fillColor=#F5F5F5;strokeColor=#666666;rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=12;fontColor=#666666;container=1;collapsible=0;shadow=1;strokeWidth=1.5;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="910" y="300" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="evidence" value="evidence/&lt;div&gt;&lt;i&gt;unedited tool output&lt;/i&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.folder;fontFamily=Helvetica;" vertex="1" parent="grp-evidence">
+          <mxGeometry x="76" y="40" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="grp-report" value="Report" style="fillColor=#F5F5F5;strokeColor=#666666;rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=12;fontColor=#666666;container=1;collapsible=0;shadow=1;strokeWidth=1.5;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="300" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="report" value="report/REPORT.md&lt;div&gt;+ control-evidence-map.md&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.document;fontFamily=Helvetica;" vertex="1" parent="grp-report">
+          <mxGeometry x="76" y="40" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="grp-pdf" value="Published" style="fillColor=#F5F5F5;strokeColor=#666666;rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=12;fontColor=#666666;container=1;collapsible=0;shadow=1;strokeWidth=1.5;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="300" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="pdf" value="REPORT.pdf&lt;div&gt;&lt;i&gt;pandoc, built in CI&lt;/i&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.documents;fontFamily=Helvetica;" vertex="1" parent="grp-pdf">
+          <mxGeometry x="76" y="40" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="lane-after" value="Remediated state (fed back through the same checks)" style="rounded=0;fillColor=none;dashed=1;verticalAlign=top;align=left;spacingLeft=10;strokeColor=light-dark(#666666,#D4D4D4);fontColor=light-dark(#666666,#D4D4D4);fontStyle=1;fontSize=12;html=1;whiteSpace=wrap;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="25" y="620" width="815" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="grp-after-export" value="Fixed exports" style="fillColor=#E8F5E9;strokeColor=#3F8624;rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=12;fontColor=#3F8624;container=1;collapsible=0;shadow=1;strokeWidth=1.5;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="660" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="after-export" value="data/synthetic/after/export&lt;div&gt;&lt;i&gt;JSON/CSV exports&lt;/i&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#3F8624;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.documents;fontFamily=Helvetica;" vertex="1" parent="grp-after-export">
+          <mxGeometry x="76" y="40" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="grp-remediation" value="Fixes as code" style="fillColor=#FFEBEE;strokeColor=#DD344C;rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=12;fontColor=#DD344C;container=1;collapsible=0;shadow=1;strokeWidth=1.5;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="330" y="660" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="remediation" value="remediation/&lt;div&gt;&lt;i&gt;policies, SCP, Terraform&lt;/i&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#DD344C;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.policy;fontFamily=Helvetica;" vertex="1" parent="grp-remediation">
+          <mxGeometry x="76" y="40" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="grp-verify" value="Reproducibility" style="fillColor=#FCE4EC;strokeColor=#E7157B;rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=12;fontColor=#E7157B;container=1;collapsible=0;shadow=1;strokeWidth=1.5;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="910" y="660" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="verify" value="make verify / CI&lt;div&gt;&lt;i&gt;diff evidence against a fresh run&lt;/i&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.checklist;fontFamily=Helvetica;" vertex="1" parent="grp-verify">
+          <mxGeometry x="76" y="40" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;strokeWidth=1.5;fontFamily=Helvetica;" edge="1" parent="1" source="grp-in-export" target="grp-iam-review">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1-label" value="reads exports" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontColor=light-dark(#232F3E,#E6E6E6);fontFamily=Helvetica;" connectable="0" vertex="1" parent="e1">
+          <mxGeometry x="0.0" relative="1" as="geometry">
+            <mxPoint x="0" y="14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;strokeWidth=1.5;fontFamily=Helvetica;" edge="1" parent="1" source="grp-in-tf" target="grp-checkov">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2-label" value="scans .tf files" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontColor=light-dark(#232F3E,#E6E6E6);fontFamily=Helvetica;" connectable="0" vertex="1" parent="e2">
+          <mxGeometry x="0.0" relative="1" as="geometry">
+            <mxPoint x="0" y="14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;strokeWidth=1.5;fontFamily=Helvetica;" edge="1" parent="1" source="grp-checkov" target="grp-ck-summary">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3-label" value="results JSON" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontColor=light-dark(#232F3E,#E6E6E6);fontFamily=Helvetica;" connectable="0" vertex="1" parent="e3">
+          <mxGeometry x="0.0" relative="1" as="geometry">
+            <mxPoint x="0" y="14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4a" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;strokeWidth=1.5;fontFamily=Helvetica;exitX=1;exitY=0.5;entryX=0;entryY=0.25;" edge="1" parent="1" source="grp-iam-review" target="grp-evidence">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="870" y="270" />
+              <mxPoint x="870" y="335" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4a-label" value="ranked findings" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontColor=light-dark(#232F3E,#E6E6E6);fontFamily=Helvetica;" connectable="0" vertex="1" parent="e4a">
+          <mxGeometry x="-0.4" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4b" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;strokeWidth=1.5;fontFamily=Helvetica;exitX=1;exitY=0.5;entryX=0;entryY=0.75;" edge="1" parent="1" source="grp-ck-summary" target="grp-evidence">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="870" y="470" />
+              <mxPoint x="870" y="405" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4b-label" value="gate result" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontColor=light-dark(#232F3E,#E6E6E6);fontFamily=Helvetica;" connectable="0" vertex="1" parent="e4b">
+          <mxGeometry x="-0.6" relative="1" as="geometry">
+            <mxPoint x="0" y="12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;strokeWidth=1.5;fontFamily=Helvetica;" edge="1" parent="1" source="grp-evidence" target="grp-report">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5-label" value="cited by ID" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontColor=light-dark(#232F3E,#E6E6E6);fontFamily=Helvetica;" connectable="0" vertex="1" parent="e5">
+          <mxGeometry x="0.0" relative="1" as="geometry">
+            <mxPoint x="0" y="14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;strokeWidth=1.5;fontFamily=Helvetica;" edge="1" parent="1" source="grp-report" target="grp-pdf">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6-label" value="pandoc" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontColor=light-dark(#232F3E,#E6E6E6);fontFamily=Helvetica;" connectable="0" vertex="1" parent="e6">
+          <mxGeometry x="0.0" relative="1" as="geometry">
+            <mxPoint x="0" y="14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;strokeWidth=1.5;fontFamily=Helvetica;dashed=1;dashPattern=8 4;exitX=0;exitY=0.5;entryX=0.5;entryY=0;" edge="1" parent="1" source="grp-after-export" target="grp-iam-review">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="10" y="730" />
+              <mxPoint x="10" y="160" />
+              <mxPoint x="430" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r1-label" value="re-checked: 0 findings" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontColor=light-dark(#232F3E,#E6E6E6);fontFamily=Helvetica;" connectable="0" vertex="1" parent="r1">
+          <mxGeometry x="0.35" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r2" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;strokeWidth=1.5;fontFamily=Helvetica;dashed=1;dashPattern=8 4;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="grp-remediation" target="grp-checkov">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r2-label" value="re-scanned: 0 failed" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontColor=light-dark(#232F3E,#E6E6E6);fontFamily=Helvetica;" connectable="0" vertex="1" parent="r2">
+          <mxGeometry x="0.0" relative="1" as="geometry">
+            <mxPoint x="70" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r3" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;strokeWidth=1.5;fontFamily=Helvetica;dashed=1;dashPattern=8 4;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="grp-verify" target="grp-evidence">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r3-label" value="diffs against a fresh run" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=11;fontColor=light-dark(#232F3E,#E6E6E6);fontFamily=Helvetica;" connectable="0" vertex="1" parent="r3">
+          <mxGeometry x="0.0" relative="1" as="geometry">
+            <mxPoint x="80" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="step-1" value="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=16;shadow=1;glass=0;strokeWidth=2;align=center;verticalAlign=middle;labelBackgroundColor=none;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="250" y="226" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="step-2" value="2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=16;shadow=1;glass=0;strokeWidth=2;align=center;verticalAlign=middle;labelBackgroundColor=none;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="250" y="426" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="step-3" value="3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=16;shadow=1;glass=0;strokeWidth=2;align=center;verticalAlign=middle;labelBackgroundColor=none;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="540" y="426" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="step-4" value="4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=16;shadow=1;glass=0;strokeWidth=2;align=center;verticalAlign=middle;labelBackgroundColor=none;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="570" y="226" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="step-5" value="5" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=16;shadow=1;glass=0;strokeWidth=2;align=center;verticalAlign=middle;labelBackgroundColor=none;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="326" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="step-6" value="6" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=16;shadow=1;glass=0;strokeWidth=2;align=center;verticalAlign=middle;labelBackgroundColor=none;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1410" y="326" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="step-7" value="7" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=16;shadow=1;glass=0;strokeWidth=2;align=center;verticalAlign=middle;labelBackgroundColor=none;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="384.0" y="570.0" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="step-8" value="8" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=16;shadow=1;glass=0;strokeWidth=2;align=center;verticalAlign=middle;labelBackgroundColor=none;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="964" y="590" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-bg" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.rect;fillColor2=none;strokeWidth=1;size=20;indent=5;fillColor=light-dark(#EDF3FF,#305363);fillStyle=auto;strokeColor=#6c8ebf;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1740" y="30" width="400" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-title" value="Key" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=18;fontStyle=1;fontColor=light-dark(#232F3E,#E6E6E6);spacingTop=-4;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="46" width="360" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="step-1-badge-legend" value="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=18;labelBackgroundColor=none;shadow=1;glass=0;strokeWidth=2;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="86" width="34" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="step-1-desc-legend" value="&lt;div&gt;&lt;b&gt;Read inputs&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: light-dark(rgb(0,0,0), rgb(255,255,255));&quot;&gt;iam_review.py reads the synthetic JSON/CSV exports.&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=13;labelBackgroundColor=none;whiteSpace=wrap;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1806" y="86" width="310" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="step-2-badge-legend" value="2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=18;labelBackgroundColor=none;shadow=1;glass=0;strokeWidth=2;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="144" width="34" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="step-2-desc-legend" value="&lt;div&gt;&lt;b&gt;Scan Terraform&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: light-dark(rgb(0,0,0), rgb(255,255,255));&quot;&gt;Checkov 3.3.19 scans the Terraform files.&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=13;labelBackgroundColor=none;whiteSpace=wrap;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1806" y="144" width="310" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="step-3-badge-legend" value="3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=18;labelBackgroundColor=none;shadow=1;glass=0;strokeWidth=2;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="202" width="34" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="step-3-desc-legend" value="&lt;div&gt;&lt;b&gt;Gate&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: light-dark(rgb(0,0,0), rgb(255,255,255));&quot;&gt;checkov_summary.py fails the run on any unexpected result.&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=13;labelBackgroundColor=none;whiteSpace=wrap;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1806" y="202" width="310" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="step-4-badge-legend" value="4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=18;labelBackgroundColor=none;shadow=1;glass=0;strokeWidth=2;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="260" width="34" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="step-4-desc-legend" value="&lt;div&gt;&lt;b&gt;Keep evidence&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: light-dark(rgb(0,0,0), rgb(255,255,255));&quot;&gt;Tool output lands in evidence/ unedited.&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=13;labelBackgroundColor=none;whiteSpace=wrap;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1806" y="260" width="310" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="step-5-badge-legend" value="5" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=18;labelBackgroundColor=none;shadow=1;glass=0;strokeWidth=2;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="318" width="34" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="step-5-desc-legend" value="&lt;div&gt;&lt;b&gt;Write report&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: light-dark(rgb(0,0,0), rgb(255,255,255));&quot;&gt;REPORT.md and the control map cite evidence by ID.&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=13;labelBackgroundColor=none;whiteSpace=wrap;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1806" y="318" width="310" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="step-6-badge-legend" value="6" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=18;labelBackgroundColor=none;shadow=1;glass=0;strokeWidth=2;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="376" width="34" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="step-6-desc-legend" value="&lt;div&gt;&lt;b&gt;Publish&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: light-dark(rgb(0,0,0), rgb(255,255,255));&quot;&gt;CI builds REPORT.pdf with pandoc.&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=13;labelBackgroundColor=none;whiteSpace=wrap;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1806" y="376" width="310" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="step-7-badge-legend" value="7" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=18;labelBackgroundColor=none;shadow=1;glass=0;strokeWidth=2;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="434" width="34" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="step-7-desc-legend" value="&lt;div&gt;&lt;b&gt;Re-check fixes&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: light-dark(rgb(0,0,0), rgb(255,255,255));&quot;&gt;Remediated exports and Terraform go through the same checks.&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=13;labelBackgroundColor=none;whiteSpace=wrap;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1806" y="434" width="310" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="step-8-badge-legend" value="8" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=18;labelBackgroundColor=none;shadow=1;glass=0;strokeWidth=2;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="492" width="34" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="step-8-desc-legend" value="&lt;div&gt;&lt;b&gt;Verify&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: light-dark(rgb(0,0,0), rgb(255,255,255));&quot;&gt;make verify / CI diffs evidence against a fresh run.&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;spacingTop=-4;fontSize=13;labelBackgroundColor=none;whiteSpace=wrap;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1806" y="492" width="310" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-lines-title" value="Notation" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=14;fontStyle=1;fontColor=light-dark(#232F3E,#E6E6E6);spacingTop=-4;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="556" width="360" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-line-styles-box" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=light-dark(#F5F5F5,#29393B);fillStyle=auto;strokeColor=#666666;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="584" width="360" height="152" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-line-0" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;strokeWidth=1.5;fontFamily=Helvetica;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1776" y="609" as="sourcePoint" />
+            <mxPoint x="1846" y="609" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-line-0-text" value="Data flow" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=12;fontStyle=0;fontColor=light-dark(#232F3E,#E6E6E6);spacingTop=-4;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1864" y="600" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-line-1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;elbow=vertical;startArrow=none;endFill=1;strokeColor=#545B64;rounded=0;strokeWidth=1.5;fontFamily=Helvetica;dashed=1;dashPattern=8 4;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1776" y="643" as="sourcePoint" />
+            <mxPoint x="1846" y="643" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-line-1-text" value="Re-check of the remediated state" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=12;fontStyle=0;fontColor=light-dark(#232F3E,#E6E6E6);spacingTop=-4;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1864" y="634" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-line-2" value="" style="rounded=0;fillColor=none;dashed=1;strokeColor=light-dark(#666666,#D4D4D4);html=1;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1776" y="664" width="70" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-line-2-text" value="Remediated state lane" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=12;fontStyle=0;fontColor=light-dark(#232F3E,#E6E6E6);spacingTop=-4;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1864" y="668" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-line-3" value="N" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#007CBD;strokeColor=default;fontColor=#FFFFFF;fontStyle=1;fontSize=13;labelBackgroundColor=none;strokeWidth=2;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1798" y="699" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-line-3-text" value="Step number, matches the list above" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=12;fontStyle=0;fontColor=light-dark(#232F3E,#E6E6E6);spacingTop=-4;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1864" y="702" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-note-0" value="Nothing in this diagram calls AWS: every input is a local file." style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=12;fontStyle=2;fontColor=light-dark(#232F3E,#E6E6E6);spacingTop=-4;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="752" width="360" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-note-1" value="All data is synthetic and fictional." style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=12;fontStyle=2;fontColor=light-dark(#232F3E,#E6E6E6);spacingTop=-4;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="792" width="360" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

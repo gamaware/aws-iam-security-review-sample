@@ -1,0 +1,8 @@
+# Used by the shared security workflow. The before fixture is insecure on purpose; `make checkov`
+# asserts that it fails with exactly the checks in evidence/checkov-before.txt (ADR 0004).
+directory:
+  - .
+skip-path:
+  - data/synthetic/before
+quiet: true
+compact: true

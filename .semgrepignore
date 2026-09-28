@@ -1,0 +1,2 @@
+# The before fixture is insecure on purpose; make verify asserts its findings (ADR 0004).
+data/synthetic/before/
