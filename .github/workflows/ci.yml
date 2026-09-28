@@ -86,17 +86,17 @@ jobs:
   lint-docs:
     permissions:
       contents: read
-    uses: gamaware/.github/.github/workflows/lint-docs.yml@1255caafb08b06cc4658318c4dd48f9dea946c9e
+    uses: gamaware/.github/.github/workflows/lint-docs.yml@1e2fe2d99f7772ad59b896f332557457ebcbdde9
 
   lint-actions:
     permissions:
       contents: read
-    uses: gamaware/.github/.github/workflows/lint-actions.yml@1255caafb08b06cc4658318c4dd48f9dea946c9e
+    uses: gamaware/.github/.github/workflows/lint-actions.yml@1e2fe2d99f7772ad59b896f332557457ebcbdde9
 
   secrets:
     permissions:
       contents: read
-    uses: gamaware/.github/.github/workflows/secrets.yml@1255caafb08b06cc4658318c4dd48f9dea946c9e
+    uses: gamaware/.github/.github/workflows/secrets.yml@1e2fe2d99f7772ad59b896f332557457ebcbdde9
 
   # Semgrep honors .semgrepignore, Checkov reads .github/checkov-ci.yaml and Trivy gets
   # trivy-skip-dirs; each leaves out only the intentionally insecure before fixture, whose
@@ -105,7 +105,7 @@ jobs:
   security:
     permissions:
       contents: read
-    uses: gamaware/.github/.github/workflows/security.yml@1255caafb08b06cc4658318c4dd48f9dea946c9e
+    uses: gamaware/.github/.github/workflows/security.yml@1e2fe2d99f7772ad59b896f332557457ebcbdde9
     with:
       trivy-skip-dirs: data/synthetic/before
       checkov-config: .github/checkov-ci.yaml
@@ -114,7 +114,7 @@ jobs:
   report:
     permissions:
       contents: read
-    uses: gamaware/.github/.github/workflows/report.yml@1255caafb08b06cc4658318c4dd48f9dea946c9e
+    uses: gamaware/.github/.github/workflows/report.yml@1e2fe2d99f7772ad59b896f332557457ebcbdde9
     with:
       report-path: report/REPORT.md
       pandoc-args: control-evidence-map.md --pdf-engine=xelatex -V geometry:margin=2.2cm --toc
