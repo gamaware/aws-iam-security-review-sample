@@ -1,5 +1,5 @@
 # Every target except test-live runs offline: no AWS account, no credentials.
-# CI calls `make verify`, so a green local run means a green pipeline.
+# CI also runs `make verify`; additional shared checks are listed in the README.
 
 SHELL := bash
 .SHELLFLAGS := -o pipefail -c
