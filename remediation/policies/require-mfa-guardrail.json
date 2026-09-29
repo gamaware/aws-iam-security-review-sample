@@ -2,6 +2,27 @@
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Sid": "ManageOwnMfaDevice",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateVirtualMFADevice",
+        "iam:EnableMFADevice",
+        "iam:GetUser",
+        "iam:ListMFADevices",
+        "iam:ResyncMFADevice"
+      ],
+      "Resource": [
+        "arn:aws:iam::111122223333:mfa/${aws:username}",
+        "arn:aws:iam::111122223333:user/${aws:username}"
+      ]
+    },
+    {
+      "Sid": "ListVirtualMfaDevices",
+      "Effect": "Allow",
+      "Action": "iam:ListVirtualMFADevices",
+      "Resource": "*"
+    },
+    {
       "Sid": "DenyEverythingExceptMfaSetupWithoutMfa",
       "Effect": "Deny",
       "NotAction": [

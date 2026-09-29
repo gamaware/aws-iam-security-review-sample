@@ -8,7 +8,7 @@ locals {
 }
 
 # People get access through IAM Identity Center. The only IAM group left is for the
-# on-call engineers, and it carries a deny-without-MFA guardrail.
+# on-call engineers, and it carries the deny-without-MFA guardrail below.
 resource "aws_iam_group" "platform_ops" {
   name = "PlatformOps"
 }
@@ -18,35 +18,6 @@ resource "aws_iam_policy" "platform_ops" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      {
-        # Lets a new or re-enrolling engineer set up MFA; the require-mfa guardrail leaves
-        # only these actions open until they sign in with MFA.
-        Sid    = "ManageOwnMfaDevice"
-        Effect = "Allow"
-        # Semgrep lists these MFA actions as resource exposure, but they are scoped to the
-        # caller's own user and MFA device ARNs below and cannot grant access to anyone else.
-        # nosemgrep: terraform.lang.security.iam.no-iam-resource-exposure.no-iam-resource-exposure
-        Action = [
-          "iam:CreateVirtualMFADevice",
-          "iam:EnableMFADevice",
-          "iam:GetUser",
-          "iam:ListMFADevices",
-          "iam:ResyncMFADevice",
-        ]
-        Resource = [
-          "arn:aws:iam::${local.account_id}:mfa/$${aws:username}",
-          "arn:aws:iam::${local.account_id}:user/$${aws:username}",
-        ]
-      },
-      {
-        # The console's Security credentials page lists virtual MFA devices before it can
-        # assign one. The action does not support resource-level permissions, so it stays on
-        # "*" in its own statement, as in AWS's self-manage-credentials example policy.
-        Sid      = "ListVirtualMfaDevices"
-        Effect   = "Allow"
-        Action   = "iam:ListVirtualMFADevices"
-        Resource = "*"
-      },
       {
         Sid      = "ListRoles"
         Effect   = "Allow"
@@ -88,26 +59,56 @@ resource "aws_iam_policy" "platform_ops" {
   })
 }
 
+# The deny-without-MFA guardrail and the MFA self-enrollment it leaves open live in one
+# document, as in AWS's self-manage-MFA example policy: any group that gets the guardrail can
+# also enroll, and the Deny's NotAction list sits next to the actions it exempts (ADR 0006).
 resource "aws_iam_policy" "require_mfa" {
   name = "require-mfa"
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [{
-      Sid    = "DenyEverythingExceptMfaSetupWithoutMfa"
-      Effect = "Deny"
-      NotAction = [
-        "iam:ChangePassword",
-        "iam:CreateVirtualMFADevice",
-        "iam:EnableMFADevice",
-        "iam:GetUser",
-        "iam:ListMFADevices",
-        "iam:ListVirtualMFADevices",
-        "iam:ResyncMFADevice",
-        "sts:GetSessionToken",
-      ]
-      Resource  = "*"
-      Condition = { BoolIfExists = { "aws:MultiFactorAuthPresent" = "false" } }
-    }]
+    Statement = [
+      {
+        # Lets a new or re-enrolling engineer set up MFA on their own user only.
+        Sid    = "ManageOwnMfaDevice"
+        Effect = "Allow"
+        Action = [
+          "iam:CreateVirtualMFADevice",
+          "iam:EnableMFADevice",
+          "iam:GetUser",
+          "iam:ListMFADevices",
+          "iam:ResyncMFADevice",
+        ]
+        Resource = [
+          "arn:aws:iam::${local.account_id}:mfa/$${aws:username}",
+          "arn:aws:iam::${local.account_id}:user/$${aws:username}",
+        ]
+      },
+      {
+        # The console's Security credentials page lists virtual MFA devices before it can
+        # assign one. The action does not support resource-level permissions, so it stays on
+        # "*" in its own statement, as in AWS's self-manage-credentials example policy.
+        Sid      = "ListVirtualMfaDevices"
+        Effect   = "Allow"
+        Action   = "iam:ListVirtualMFADevices"
+        Resource = "*"
+      },
+      {
+        Sid    = "DenyEverythingExceptMfaSetupWithoutMfa"
+        Effect = "Deny"
+        NotAction = [
+          "iam:ChangePassword",
+          "iam:CreateVirtualMFADevice",
+          "iam:EnableMFADevice",
+          "iam:GetUser",
+          "iam:ListMFADevices",
+          "iam:ListVirtualMFADevices",
+          "iam:ResyncMFADevice",
+          "sts:GetSessionToken",
+        ]
+        Resource  = "*"
+        Condition = { BoolIfExists = { "aws:MultiFactorAuthPresent" = "false" } }
+      },
+    ]
   })
 }
 
