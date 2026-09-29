@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -129,6 +130,33 @@ def test_deny_guardrail_with_plain_bool_does_not_cover_access_keys():
     assert ids(check_grants(grants, {"group/ops"})) == ["IAM-005"]
 
 
+@pytest.mark.parametrize(
+    "narrowing",
+    [
+        {"Resource": "arn:aws:s3:::one-bucket"},
+        {"NotResource": "arn:aws:s3:::one-bucket"},
+        {
+            "Condition": {
+                "BoolIfExists": {"aws:MultiFactorAuthPresent": "false"},
+                "StringEquals": {"aws:RequestedRegion": "us-east-1"},
+            }
+        },
+    ],
+)
+def test_narrowed_guardrail_does_not_cover_the_principal(narrowing):
+    guardrail = {
+        "Effect": "Deny",
+        "NotAction": "iam:ChangePassword",
+        "Resource": "*",
+        "Condition": {"BoolIfExists": {"aws:MultiFactorAuthPresent": "false"}},
+    } | narrowing
+    if "NotResource" in narrowing:
+        del guardrail["Resource"]
+    sensitive = allow("s3:DeleteBucket", "arn:aws:s3:::bucket")
+    grants = [grant(sensitive, "group/ops"), grant(guardrail, "group/ops")]
+    assert ids(check_grants(grants, {"group/ops"})) == ["IAM-005"]
+
+
 def test_mfa_findings_are_one_per_principal_and_policy():
     statements = [grant(allow("iam:*"), "group/ops"), grant(allow("iam:PassRole"), "group/ops")]
     mfa = [f for f in check_grants(statements, {"group/ops"}) if f.check_id == "IAM-005"]
@@ -163,6 +191,15 @@ def oidc_trust(condition: dict | None) -> dict:
         ({"StringLike": {"example:sub": "repo:org/app?:environment:production"}}, True),
         ({"StringEquals": {"example:sub": "repo:org/app:environment:production"}}, False),
         ({"StringLike": {"example:sub": "repo:org/app:environment:production"}}, False),
+        ({"StringNotEquals": {"example:sub": "repo:evil/x"}}, True),
+        ({"StringNotLike": {"example:sub": "repo:evil/*"}}, True),
+        # IfExists matches a token that carries no sub claim at all.
+        ({"StringEqualsIfExists": {"example:sub": "repo:org/app:environment:production"}}, True),
+        ({"StringLikeIfExists": {"example:sub": "repo:org/app:environment:production"}}, True),
+        (
+            {"ForAllValues:StringEquals": {"example:sub": "repo:org/app:environment:production"}},
+            True,
+        ),
     ],
 )
 def test_federated_trust_needs_an_exact_subject(condition, flagged):
@@ -180,6 +217,18 @@ def test_any_aws_principal_without_condition_is_flagged():
     [
         ({"Bool": {"aws:SecureTransport": "true"}}, True),
         ({"StringEquals": {"aws:PrincipalOrgID": "o-example"}}, False),
+        ({"IpAddress": {"aws:SourceIp": "0.0.0.0/0"}}, True),
+        ({"StringLike": {"aws:PrincipalArn": "*"}}, True),
+        ({"StringNotEquals": {"aws:PrincipalAccount": "444455556666"}}, True),
+        ({"IpAddress": {"aws:SourceIp": "203.0.113.0/24"}}, False),
+        ({"StringLike": {"aws:PrincipalArn": ["*", "arn:aws:iam::111122223333:role/x"]}}, True),
+        # IfExists matches requests without the key; Null only tests that the key is present.
+        ({"StringEqualsIfExists": {"aws:PrincipalOrgID": "o-example"}}, True),
+        ({"IpAddressIfExists": {"aws:SourceIp": "203.0.113.0/24"}}, True),
+        ({"Null": {"aws:PrincipalArn": "false"}}, True),
+        # ForAllValues is true when the key is missing; ForAnyValue is false then, so it restricts.
+        ({"ForAllValues:StringEquals": {"aws:PrincipalOrgID": "o-example"}}, True),
+        ({"ForAnyValue:StringEquals": {"aws:PrincipalOrgID": "o-example"}}, False),
     ],
 )
 def test_any_aws_principal_needs_a_caller_condition(condition, flagged):
@@ -331,6 +380,16 @@ def test_cross_account_principal_must_be_trusted():
     assert [f.detail.split()[1] for f in findings] == ["444455556666"]
 
 
+def test_assumed_role_session_principal_counts_as_its_account():
+    statement = {
+        "Effect": "Allow",
+        "Principal": {"AWS": "arn:aws:sts::444455556666:assumed-role/x/session"},
+        "Action": "s3:GetObject",
+    }
+    findings = check_bucket_policy("b", bucket(statement), "111122223333", set())
+    assert ids(findings) == ["S3-002"]
+
+
 def test_service_principals_and_own_account_are_not_cross_account():
     statements = [
         {"Effect": "Allow", "Principal": {"Service": "cloudtrail.amazonaws.com"}, "Action": "*"},
@@ -434,3 +493,35 @@ def test_cli_as_of_override_changes_key_ages(capsys):
     iam_review.main([str(SAMPLE), "--format", "json", "--as-of", "2024-06-01T00:00:00"])
     rows = json.loads(capsys.readouterr().out)
     assert not any(r["subject"] == "user/deploy-bot" and r["check_id"] == "IAM-006" for r in rows)
+
+
+def copy_export(tmp_path: Path) -> Path:
+    target = tmp_path / "export"
+    shutil.copytree(REMEDIATED, target)
+    return target
+
+
+def test_cli_missing_bucket_policy_directory_is_bad_input(tmp_path, capsys):
+    export = copy_export(tmp_path)
+    shutil.rmtree(export / "bucket-policies")
+    assert iam_review.main([str(export)]) == 2
+    assert "bucket-policies" in capsys.readouterr().err
+
+
+def test_naive_snapshot_time_is_read_as_utc(tmp_path, capsys):
+    export = copy_export(tmp_path)
+    scope = json.loads((export / "review-scope.json").read_text())
+    scope["snapshot_time"] = scope["snapshot_time"].replace("Z", "").split("+")[0]
+    (export / "review-scope.json").write_text(json.dumps(scope))
+    assert iam_review.main([str(export)]) == 0
+    capsys.readouterr()
+
+
+def test_cli_wrong_shaped_export_is_bad_input(tmp_path, capsys):
+    export = copy_export(tmp_path)
+    details = json.loads((export / "account-authorization-details.json").read_text())
+    trust = details["RoleDetailList"][0]["AssumeRolePolicyDocument"]
+    trust["Statement"][0]["Condition"] = "not-a-mapping"
+    (export / "account-authorization-details.json").write_text(json.dumps(details))
+    assert iam_review.main([str(export)]) == 2
+    capsys.readouterr()

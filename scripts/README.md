@@ -31,8 +31,29 @@ To produce an export from a real account you are authorized to review, with read
 ```bash
 mkdir -p export/bucket-policies
 aws iam get-account-authorization-details > export/account-authorization-details.json
-aws iam generate-credential-report && sleep 10
-aws iam get-credential-report --query Content --output text | base64 --decode > export/credential-report.csv
+# Drop any earlier report so a failed refresh leaves no stale file for iam_review.py to read.
+rm -f export/credential-report.csv
+# Generation is asynchronous: poll until the report is COMPLETE. Denied access or missing or expired
+# credentials stop the loop at once; any other failure is retried, up to 60 attempts (about 5 minutes).
+wait_for_credential_report() {
+  local attempt out
+  local fatal='AccessDenied|ExpiredToken|InvalidClientTokenId|UnrecognizedClient|expired|Unable to locate credentials'
+  for attempt in $(seq 60); do
+    if out="$(aws iam generate-credential-report --query State --output text 2>&1)"; then
+      [ "$out" = COMPLETE ] && return 0
+    elif grep -qiE "$fatal" <<<"$out"; then
+      echo "generate-credential-report failed, not retrying: $out" >&2
+      return 1
+    else
+      echo "attempt $attempt failed, retrying: $out" >&2
+    fi
+    sleep 5
+  done
+  echo "credential report not COMPLETE after $attempt attempts; last response: $out" >&2
+  return 1
+}
+wait_for_credential_report &&
+  aws iam get-credential-report --query Content --output text | base64 --decode > export/credential-report.csv
 aws cloudtrail describe-trails > export/describe-trails.json   # add IsLogging from get-trail-status per trail
 aws s3api get-bucket-policy --bucket BUCKET --query Policy --output text > export/bucket-policies/BUCKET.json
 ```

@@ -1,5 +1,5 @@
-# Least-privilege rewrites. The same documents live in ../policies/ as JSON, which is what
-# scripts/iam_review.py reads; tests/test_consistency.py keeps the Sids in step.
+# Scoped policy rewrites. The same documents live in ../policies/ as JSON, which is what
+# scripts/iam_review.py reads; tests/test_consistency.py keeps the statements in step.
 
 data "aws_caller_identity" "current" {}
 
@@ -18,6 +18,35 @@ resource "aws_iam_policy" "platform_ops" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
+      {
+        # Lets a new or re-enrolling engineer set up MFA; the require-mfa guardrail leaves
+        # only these actions open until they sign in with MFA.
+        Sid    = "ManageOwnMfaDevice"
+        Effect = "Allow"
+        # Semgrep lists these MFA actions as resource exposure, but they are scoped to the
+        # caller's own user and MFA device ARNs below and cannot grant access to anyone else.
+        # nosemgrep: terraform.lang.security.iam.no-iam-resource-exposure.no-iam-resource-exposure
+        Action = [
+          "iam:CreateVirtualMFADevice",
+          "iam:EnableMFADevice",
+          "iam:GetUser",
+          "iam:ListMFADevices",
+          "iam:ResyncMFADevice",
+        ]
+        Resource = [
+          "arn:aws:iam::${local.account_id}:mfa/$${aws:username}",
+          "arn:aws:iam::${local.account_id}:user/$${aws:username}",
+        ]
+      },
+      {
+        # The console's Security credentials page lists virtual MFA devices before it can
+        # assign one. The action does not support resource-level permissions, so it stays on
+        # "*" in its own statement, as in AWS's self-manage-credentials example policy.
+        Sid      = "ListVirtualMfaDevices"
+        Effect   = "Allow"
+        Action   = "iam:ListVirtualMFADevices"
+        Resource = "*"
+      },
       {
         Sid      = "ListRoles"
         Effect   = "Allow"

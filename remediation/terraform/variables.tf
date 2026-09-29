@@ -19,6 +19,13 @@ variable "partner_role_arn" {
   description = "Role in the approved analytics partner account that reads its export prefix. Placeholder ID."
   type        = string
   default     = "arn:aws:iam::999988887777:role/partner-ingest"
+
+  # Interpolated into the bucket and key policies: accept one named role, never a wildcard.
+  # An optional path may hold slashes; the role name after it is 1-64 characters, no slash.
+  validation {
+    condition     = can(regex("^arn:aws:iam::[0-9]{12}:role/(?:[A-Za-z0-9+=,.@_-]+/)*[A-Za-z0-9+=,.@_-]{1,64}$", var.partner_role_arn))
+    error_message = "Use one role ARN (arn:aws:iam::<account>:role/<name>) with no wildcards."
+  }
 }
 
 variable "release_bucket_name" {

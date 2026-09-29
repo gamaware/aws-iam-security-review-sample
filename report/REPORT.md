@@ -1,7 +1,7 @@
 # AWS IAM and security configuration review
 
 > **This sample covers a FICTIONAL client, Harbor Goods, a mid-size retailer with account `111122223333`.**
-> No company, individual or account represented here is real. Each repository in this portfolio is a separate
+> The client, its staff and its account are fictional. Each repository in this portfolio is a separate
 > engagement with Harbor Goods, a fictional mid-size retailer. The repository files reproduce all findings below
 > through `make verify`.
 
@@ -17,8 +17,8 @@
 
 ## Executive summary
 
-Three independent routes currently allow account takeover. Each also leaves gaps that would complicate an
-investigation.
+Two independent routes currently allow account takeover, and a third exposes customer data to anyone. Each also
+leaves gaps that would complicate an investigation.
 
 1. **Every repository in the GitHub organization has a path to administrator access.** The CI role combines trust
    in `repo:harborgoods/*` with `Action: *` on `Resource: *`. Any repository's workflow can assume the role,
@@ -33,7 +33,7 @@ administrator using `iam:*` and `iam:PassRole` on `*`. Three long-lived access k
 CloudTrail records a single region and does not validate log files.
 
 Most fixes take little time and require small changes. Of the twelve recommendations, nine can be completed during
-the first week without application code changes. The least-privilege replacements are in
+the first week without application code changes. The scoped replacements are in
 [`remediation/`](../remediation/). With those replacements applied, the original checks return **0 findings**,
 and Checkov returns **0 failed checks**
 ([evidence](../evidence/iam-review-after.txt), [evidence](../evidence/checkov-after.txt)).
@@ -76,7 +76,7 @@ probably intended to be temporary.
 Require reviewers for that environment. Limit pipeline permissions to its actual tasks: uploading release artifacts
 within one prefix and updating one Lambda function.
 
-**Least-privilege rewrite** ([`ci-deploy-trust.json`](../remediation/policies/ci-deploy-trust.json),
+**Scoped rewrite** ([`ci-deploy-trust.json`](../remediation/policies/ci-deploy-trust.json),
 [`ci-deploy-permissions.json`](../remediation/policies/ci-deploy-permissions.json)):
 
 ```json
@@ -125,7 +125,7 @@ MFA devices for root and keep its password in the company vault. Configure an al
 a CloudWatch metric filter on the trail log group established in F-07. Use IAM Identity Center for routine
 administration.
 
-**Least-privilege rewrite.** Root permissions cannot be narrowed, so no rewrite applies. Remove its keys, enable
+**Scoped rewrite.** Root permissions cannot be narrowed, so no rewrite applies. Remove its keys, enable
 MFA, leave root unused and monitor it with alarms.
 
 ### F-03 Critical: customer exports are readable by anyone on the internet
@@ -150,7 +150,7 @@ statement. Authorize the partner through a role restricted to its prefix, as des
 Provide short-lived presigned URLs if partners require links. Determine whether an incident occurred by checking
 S3 server access logs for anonymous `GetObject` requests, or CloudTrail data events where enabled.
 
-**Least-privilege rewrite:** F-08 supplies replacements for both statements in this bucket policy.
+**Scoped rewrite:** F-08 supplies replacements for both statements in this bucket policy.
 
 ### F-04 High: human administrators work without MFA
 
@@ -171,7 +171,7 @@ That access allows an attacker to disable CloudTrail and erase evidence of the a
 the `Admins` group. During the transition, apply the deny-without-MFA guardrail below to all human groups.
 It permits only MFA setup until the user authenticates with MFA.
 
-**Least-privilege rewrite** ([`require-mfa-guardrail.json`](../remediation/policies/require-mfa-guardrail.json)):
+**Scoped rewrite** ([`require-mfa-guardrail.json`](../remediation/policies/require-mfa-guardrail.json)):
 
 ```json
 {
@@ -205,10 +205,11 @@ including the CI role, and exercise its permissions. Terminate access on `*` ext
 including those outside the platform team.
 
 **Recommended fix.** Retain read access to IAM. Restrict `PassRole` to `app-*` roles passed to EC2, and require MFA.
-Allow stop and terminate only for instances with the tag `team = platform`. Require reviewed Terraform changes
-for role and policy updates rather than console edits.
+Allow stop and terminate only for instances with the tag `team = platform`. Let members manage only their own MFA
+device, so the F-04 guardrail does not lock out a new engineer. Require reviewed Terraform changes for role and
+policy updates rather than console edits.
 
-**Least-privilege rewrite** ([`platform-ops.json`](../remediation/policies/platform-ops.json)):
+**Scoped rewrite** ([`platform-ops.json`](../remediation/policies/platform-ops.json)):
 
 ```json
 {"Sid": "PassOnlyAppRolesToEc2WithMfa", "Effect": "Allow", "Action": "iam:PassRole",
@@ -252,7 +253,7 @@ keys immediately. Delete that user after two weeks if no failures occur. For any
 assign a role restricted to its workgroup. Configure the AWS Config rule `access-keys-rotated` with 90 days
 to detect new keys that age without attention.
 
-**Least-privilege rewrite.** Workloads retain no IAM users after remediation; F-01 provides the CI role.
+**Scoped rewrite.** Workloads retain no IAM users after remediation; F-01 provides the CI role.
 
 ### F-07 High: CloudTrail covers one region and its logs can be altered undetected
 
@@ -301,7 +302,7 @@ role to list and read only its prefix. Give the bucket a separate KMS key, with 
 decrypt solely through S3 (`kms:ViaService`). This keeps the vendor from using the audit-log encryption key.
 The client verified the vendor relationship; the remediated scope therefore marks `999988887777` as trusted.
 
-**Least-privilege rewrite**
+**Scoped rewrite**
 ([`customer-exports-bucket-policy.json`](../remediation/policies/customer-exports-bucket-policy.json)):
 
 ```json
