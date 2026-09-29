@@ -19,7 +19,7 @@ rather than Semantic Versioning.
 - Report consistency tests: quoted tool output, severity counts, finding IDs, links and account IDs.
 - `make verify` (offline, same command in CI), `make report` (pandoc PDF, committed as `report/REPORT.pdf`) and a
   manual `make test-live` that checks the rewrites with IAM Access Analyzer and the IAM policy simulator.
-- Methodology, ADRs 0001 to 0005, context and evidence pipeline diagrams, cover image, and a social preview
+- Methodology, ADRs 0001 to 0006, context and evidence pipeline diagrams, cover image, and a social preview
   rendered with the shared generator from `docs/assets/social-preview.json`.
 - CI with `permissions: {}`, SHA-pinned actions, calls to the shared `gamaware/.github` workflows (docs, actions,
   secrets, security, report PDF) pinned by commit SHA, an OSSF Scorecard workflow, and pre-commit
@@ -39,8 +39,10 @@ rather than Semantic Versioning.
   principals are attributed to their account; a snapshot time without an offset is read as UTC; a missing
   `bucket-policies/` directory or a wrong-shaped export is bad input (exit 2), not a clean or failed review.
 - `checkov_summary.py`: a missing `--expect` file is bad input (exit 2).
-- `platform-ops` rewrite lets members enroll their own MFA device, which the require-MFA guardrail expects,
-  including `iam:ListVirtualMFADevices`, which the console's Security credentials page needs.
+- The require-MFA guardrail lets each user enroll their own MFA device, including `iam:ListVirtualMFADevices`,
+  which the console's Security credentials page needs. The Allow statements sit in the same policy as the Deny
+  they are exempt from, so any group that gets the guardrail can enroll, and Semgrep passes without a suppression
+  (ADR 0006).
 - `scripts/README.md`: the credential report polling loop stops on a failed AWS CLI call and gives up after a
   bounded number of attempts instead of retrying forever.
 - `partner_role_arn` accepts one role ARN only; the consistency test compares statement contents with Terraform,
