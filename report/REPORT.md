@@ -169,7 +169,8 @@ That access allows an attacker to disable CloudTrail and erase evidence of the a
 
 **Recommended fix.** Require MFA and a short session for human access through IAM Identity Center, then remove
 the `Admins` group. During the transition, apply the deny-without-MFA guardrail below to all human groups.
-It permits only MFA setup until the user authenticates with MFA.
+The same policy lets each user enroll an MFA device on their own user only, and it permits nothing else until the
+user authenticates with MFA.
 
 **Scoped rewrite** ([`require-mfa-guardrail.json`](../remediation/policies/require-mfa-guardrail.json)):
 
@@ -205,9 +206,9 @@ including the CI role, and exercise its permissions. Terminate access on `*` ext
 including those outside the platform team.
 
 **Recommended fix.** Retain read access to IAM. Restrict `PassRole` to `app-*` roles passed to EC2, and require MFA.
-Allow stop and terminate only for instances with the tag `team = platform`. Let members manage only their own MFA
-device, so the F-04 guardrail does not lock out a new engineer. Require reviewed Terraform changes for role and
-policy updates rather than console edits.
+Allow stop and terminate only for instances with the tag `team = platform`. Attach the F-04 guardrail as well; it
+lets members manage only their own MFA device, so it does not lock out a new engineer. Require reviewed Terraform
+changes for role and policy updates rather than console edits.
 
 **Scoped rewrite** ([`platform-ops.json`](../remediation/policies/platform-ops.json)):
 

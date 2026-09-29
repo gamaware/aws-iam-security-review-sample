@@ -171,3 +171,25 @@ def test_scps_only_deny_and_fit_the_size_limit(scp_file):
     assert len(sids) == len(set(sids))
     # AWS Organizations limits an SCP to 5,120 characters, whitespace included.
     assert len(raw) <= 5120
+
+
+# The Semgrep suppressions ADR 0006 accepts; each names its rule and sits in its statement.
+DOCUMENTED_SUPPRESSIONS = [
+    ("iam.tf", "PassOnlyAppRolesToEc2WithMfa", "no-iam-resource-exposure.no-iam-resource-exposure"),
+    ("iam.tf", "DeployOneFunction", "no-iam-priv-esc-roles.no-iam-priv-esc-roles"),
+]
+NOSEMGREP = re.compile(r"#\s*nosemgrep:\s*terraform\.lang\.security\.iam\.(\S+)")
+SID = re.compile(r'\bSid\s*=\s*"(\w+)"')
+
+
+def test_semgrep_suppressions_are_the_documented_ones():
+    found = []
+    for path in sorted((REPO / "remediation" / "terraform").rglob("*.tf")):
+        text = path.read_text()
+        assert text.count("nosemgrep") == len(NOSEMGREP.findall(text)), (
+            f"{path.name}: nosemgrep without an IAM rule id"
+        )
+        for match in NOSEMGREP.finditer(text):
+            sids = SID.findall(text, 0, match.start())
+            found.append((path.name, sids[-1] if sids else None, match.group(1)))
+    assert found == DOCUMENTED_SUPPRESSIONS
