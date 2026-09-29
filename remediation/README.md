@@ -6,7 +6,7 @@ flag the before state: `scripts/iam_review.py` reports no findings and Checkov r
 
 | Path | Contents |
 | --- | --- |
-| [`policies/`](policies/) | The least-privilege policy rewrites, one JSON document each. This is what a client reviews and applies. |
+| [`policies/`](policies/) | The scoped policy rewrites, one JSON document each. This is what a client reviews and applies. |
 | [`scps/`](scps/) | A baseline service control policy for when the account joins AWS Organizations |
 | [`terraform/`](terraform/) | The same changes as Terraform, with a `secure-bucket` module for the S3 baseline |
 

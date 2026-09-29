@@ -43,7 +43,7 @@ With the fixes in place, rerunning the checker yields **0 findings**; Checkov re
 | [Security review report](report/REPORT.md) | Executive summary, nine ranked findings with evidence, impact, fix and policy rewrite, quick wins, SCP recommendation |
 | [SOC 2 control to evidence map](report/control-evidence-map.md) | Trust Services Criteria linked to the AWS control and evidence file, before and after. A map, not an audit opinion |
 | [Evidence](evidence/) | Unedited tool output the report quotes, regenerated and diffed on every CI run |
-| [Fixes as code](remediation/) | Least-privilege policy documents, a baseline SCP, and the same changes as Terraform |
+| [Fixes as code](remediation/) | Scoped policy documents, a baseline SCP, and the same changes as Terraform |
 | [Checker](scripts/iam_review.py) | 17 offline checks in Python's standard library, about 500 lines |
 | [Methodology](docs/methodology.md) | Access model, triage from raw hits to findings, severity scale, verification levels |
 

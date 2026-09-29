@@ -117,6 +117,7 @@ simulate implicitDeny "$POLICIES/platform-ops.json" iam:PassRole "$ACCOUNT_ARN:r
 simulate allowed "$POLICIES/platform-ops.json" iam:PassRole "$ACCOUNT_ARN:role/app-web" "$MFA" "$TO_EC2"
 simulate implicitDeny "$POLICIES/platform-ops.json" iam:PassRole "$ACCOUNT_ARN:role/app-web" "$TO_EC2"
 simulate implicitDeny "$POLICIES/platform-ops.json" iam:AttachUserPolicy "$ACCOUNT_ARN:user/bob.ops" "$MFA"
+simulate allowed "$POLICIES/platform-ops.json" iam:ListVirtualMFADevices "*"
 simulate allowed "$POLICIES/platform-ops.json" ec2:TerminateInstances "$INSTANCE" "$TEAM_PLATFORM"
 simulate implicitDeny "$POLICIES/platform-ops.json" ec2:TerminateInstances "$INSTANCE" "$TEAM_OTHER"
 simulate allowed "$POLICIES/ci-deploy-permissions.json" lambda:UpdateFunctionCode \

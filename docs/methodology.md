@@ -110,7 +110,7 @@ CI never executes it.
 2. Before proceeding, it displays `aws sts get-caller-identity` and pauses until you enter `yes`.
    Check the account before setting `LIVE_CONFIRM=yes`.
 3. Every document in `remediation/` goes through IAM Access Analyzer `validate-policy`. Next,
-   `iam simulate-custom-policy` evaluates ten allow and deny cases. These include the before `platform-ops`
+   `iam simulate-custom-policy` evaluates eleven allow and deny cases. These include the before `platform-ops`
    policy's ability to pass the CI role, which the rewritten policy removes.
 4. Neither API creates resources; both evaluate documents, so the script creates none. At exit, the script also
    verifies that no resources remain with the tags `purpose=portfolio-test` and

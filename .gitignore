@@ -29,6 +29,10 @@ build/
 .firecrawl/
 .DS_Store
 .claude-flow/
+.claude/proven-config*
+
+# Exports from a real account (scripts/README.md); never commit them
+/export/
 
 # PDFs; only the rendered report is committed (ADR 0005)
 *.pdf
