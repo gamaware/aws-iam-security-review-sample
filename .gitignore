@@ -28,8 +28,6 @@ build/
 # Tools
 .firecrawl/
 .DS_Store
-.claude-flow/
-.claude/proven-config*
 
 # Exports from a real account (scripts/README.md); never commit them
 /export/
