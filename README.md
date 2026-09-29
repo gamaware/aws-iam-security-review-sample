@@ -66,6 +66,8 @@ Completion requires the following:
 
 ## Architecture
 
+![Animated flow: IAM exports, offline checks, triage and verified fixes](docs/diagrams/architecture-animated.svg)
+
 ![Context: the Harbor Goods engineer exports read-only data, the reviewer runs the offline toolkit, and the fixes
 return as pull requests](docs/diagrams/context.png)
 

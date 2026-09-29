@@ -16,7 +16,15 @@ REPORT = (REPO / "report" / "REPORT.md").read_text()
 EVIDENCE_MAP = (REPO / "report" / "control-evidence-map.md").read_text()
 EVIDENCE = REPO / "evidence"
 HIT = re.compile(r"^(CRITICAL|HIGH|MEDIUM|LOW)\s")
-SKIP_DIRS = {".git", ".venv", ".terraform", ".pytest_cache", ".ruff_cache", "build"}
+SKIP_DIRS = {"build"}
+
+
+def skipped(path: Path) -> bool:
+    """Skip build output and hidden directories such as VCS data and caches, except .github."""
+    parts = path.relative_to(REPO).parts[:-1]
+    return any(part in SKIP_DIRS or (part.startswith(".") and part != ".github") for part in parts)
+
+
 ALLOWED_ACCOUNT_IDS = {"111122223333", "444455556666", "999988887777"}
 
 
@@ -30,11 +38,7 @@ def cited_hits() -> list[str]:
 
 
 def markdown_files() -> list[Path]:
-    return sorted(
-        path
-        for path in REPO.rglob("*.md")
-        if not SKIP_DIRS.intersection(path.relative_to(REPO).parts)
-    )
+    return sorted(path for path in REPO.rglob("*.md") if not skipped(path))
 
 
 def test_every_quoted_hit_is_in_the_evidence_and_every_hit_is_quoted():
@@ -92,7 +96,7 @@ def test_only_documentation_account_ids_appear():
     names = {"Makefile", "CODEOWNERS", ".gitignore"}
     found = set()
     for path in REPO.rglob("*"):
-        if SKIP_DIRS.intersection(path.relative_to(REPO).parts) or not path.is_file():
+        if skipped(path) or not path.is_file():
             continue
         if path.suffix not in suffixes and path.name not in names:
             continue

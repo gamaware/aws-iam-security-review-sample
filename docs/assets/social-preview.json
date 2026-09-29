@@ -1,6 +1,6 @@
 {
   "color": "#232F3E",
-  "heading": ["AWS security review", "with least-privilege", "IAM fixes"],
+  "heading": ["AWS security review", "with scoped", "IAM fixes"],
   "subtitle": "fictional sample · evidence-backed · fixes as code",
   "steps": [
     {"label": "Read-only exports"},
