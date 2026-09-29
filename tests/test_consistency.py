@@ -21,7 +21,7 @@ import pytest
 REPO = Path(__file__).resolve().parents[1]
 POLICIES = REPO / "remediation" / "policies"
 EXPORT = REPO / "data" / "synthetic" / "after" / "export"
-TERRAFORM = "\n".join(p.read_text() for p in (REPO / "remediation" / "terraform").glob("*.tf"))
+TERRAFORM = [p.read_text() for p in sorted((REPO / "remediation" / "terraform").glob("*.tf"))]
 
 
 def load(path: Path) -> dict:
@@ -73,11 +73,15 @@ BLOCK_END = re.compile(r"\bSid\s*=|^(?:resource|data|module|locals|variable|outp
 
 
 def terraform_blocks(sid: str) -> list[str]:
-    """Text of each Terraform statement with this Sid, up to the next statement or block."""
+    """Text of each Terraform statement with this Sid, up to the next statement or block.
+
+    Each file is searched on its own, so a statement never runs into another file.
+    """
     blocks = []
-    for match in re.finditer(rf'\bSid\s*=\s*"{re.escape(sid)}"', TERRAFORM):
-        end = BLOCK_END.search(TERRAFORM, match.end())
-        blocks.append(TERRAFORM[match.end() : end.start() if end else len(TERRAFORM)])
+    for text in TERRAFORM:
+        for match in re.finditer(rf'\bSid\s*=\s*"{re.escape(sid)}"', text):
+            end = BLOCK_END.search(text, match.end())
+            blocks.append(text[match.end() : end.start() if end else len(text)])
     return blocks
 
 
