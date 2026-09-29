@@ -3,9 +3,11 @@
 The rewrites live in remediation/policies/ (the deliverable), inside
 data/synthetic/after/export/ (what iam_review.py reads) and in remediation/terraform/ (what
 Checkov reads). HCL is not parsed here. The Terraform check finds each statement by Sid and
-compares its Effect and every quoted `service:Name` token (actions and condition keys), which
-catches a missing, renamed, widened or narrowed statement. ARNs are interpolated in Terraform
-and are left to Checkov and review.
+compares its Effect, every quoted `service:Name` token (actions and condition keys), its
+condition operators and every literal value without a colon (such as "*", "true" or a tag
+value), which catches a missing or renamed statement and a changed action, condition key,
+operator or condition value. ARNs are interpolated in Terraform and are left to Checkov and
+review.
 """
 
 from __future__ import annotations
@@ -57,10 +59,17 @@ def test_export_bucket_policies_match_the_rewrites(bucket):
     assert exported == load(POLICIES / f"{bucket}-bucket-policy.json")
 
 
-# A quoted token with exactly one colon, such as "s3:GetObject" or "aws:SourceArn". ARNs and
-# interpolated values have more colons or a "$" and never match.
-TOKEN = re.compile(r'"([a-z0-9-]+:[A-Za-z0-9*]+)"')
-BLOCK_END = re.compile(r'\bSid\s*=|^(?:resource|data|module) "', re.M)
+# A quoted token with exactly one colon, such as "s3:GetObject" or "aws:ResourceTag/team". ARNs
+# and interpolated values have more colons or a "$" and never match.
+TOKEN = re.compile(r'"([a-z0-9-]+:[A-Za-z0-9*?/_.-]+)"')
+# Every quoted string; the ones with no colon and no interpolation are literals such as an
+# Effect, "*" or a condition value.
+QUOTED = re.compile(r'"([^"]*)"')
+COMMENT = re.compile(r"#.*$", re.M)
+# A condition operator block, such as `StringEquals = {` or `BoolIfExists = {`.
+OPERATOR = re.compile(r"\b([A-Z]\w*)\s*=\s*\{")
+NOT_OPERATORS = {"Condition", "Principal"}
+BLOCK_END = re.compile(r"\bSid\s*=|^(?:resource|data|module|locals|variable|output)\b", re.M)
 
 
 def terraform_blocks(sid: str) -> list[str]:
@@ -72,13 +81,31 @@ def terraform_blocks(sid: str) -> list[str]:
     return blocks
 
 
+def leaf_strings(value) -> list[str]:
+    """Every string value (not key) in a statement fragment."""
+    if isinstance(value, dict):
+        return [s for v in value.values() for s in leaf_strings(v)]
+    if isinstance(value, list):
+        return [s for v in value for s in leaf_strings(v)]
+    return [value] if isinstance(value, str) else []
+
+
+def literals(strings) -> set[str]:
+    return {s for s in strings if ":" not in s and "$" not in s}
+
+
 def matches(statement: dict, block: str) -> bool:
+    block = COMMENT.sub("", block)
     effect = re.search(r'\bEffect\s*=\s*"(\w+)"', block)
-    tokens = set(TOKEN.findall(json.dumps({k: v for k, v in statement.items() if k != "Sid"})))
+    body = {k: v for k, v in statement.items() if k != "Sid"}
+    tokens = set(TOKEN.findall(json.dumps(body)))
+    operators = set(OPERATOR.findall(block)) - NOT_OPERATORS
     return (
         bool(effect)
         and effect.group(1) == statement["Effect"]
         and set(TOKEN.findall(block)) == tokens
+        and literals(QUOTED.findall(block)) == literals(leaf_strings(body))
+        and operators == set(statement.get("Condition", {}))
     )
 
 
@@ -97,6 +124,24 @@ def test_statement_comparison_catches_a_changed_action():
     widened = statement | {"Action": [*statement["Action"], "ec2:RebootInstances"]}
     assert any(matches(statement, b) for b in terraform_blocks(statement["Sid"]))
     assert not any(matches(widened, b) for b in terraform_blocks(statement["Sid"]))
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        {"Condition": None},
+        {"Condition": {"StringLike": {"aws:ResourceTag/team": "platform"}}},
+        {"Condition": {"StringEquals": {"aws:ResourceTag/team": "*"}}},
+        {"Condition": {"StringEquals": {"aws:ResourceTag/owner": "platform"}}},
+    ],
+)
+def test_statement_comparison_catches_a_changed_condition(change):
+    statement = load(POLICIES / "platform-ops.json")["Statement"][-1]
+    assert statement["Sid"] == "StopAndTerminatePlatformInstancesOnly"
+    changed = {k: v for k, v in (statement | change).items() if v is not None}
+    blocks = terraform_blocks(statement["Sid"])
+    assert any(matches(statement, b) for b in blocks)
+    assert not any(matches(changed, b) for b in blocks)
 
 
 @pytest.mark.parametrize("policy_file", sorted(p.name for p in POLICIES.glob("*.json")))

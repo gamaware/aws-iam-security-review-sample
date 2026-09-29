@@ -175,14 +175,21 @@ def requires_mfa(statement: dict) -> bool:
     return bool(condition_values(statement, age_ops, "aws:multifactorauthage"))
 
 
+def limits_matches(operator: str) -> bool:
+    """True for a lower-cased operator that only matches requests whose key has a listed value."""
+    return not ("not" in operator or operator.endswith("ifexists") or operator == "null")
+
+
 def restricts_caller(statement: dict) -> bool:
     """True when a positive caller condition limits who matches the statement.
 
     Negated operators (StringNotEquals, NotIpAddress, ...) only exclude some callers, and
     a value such as "*" or 0.0.0.0/0 anywhere in the list matches everyone, so neither counts.
+    Nor do *IfExists operators, which match any request that lacks the key, or Null, which
+    only tests whether the key is present.
     """
     for operator, pairs in conditions(statement).items():
-        if "not" in operator:
+        if not limits_matches(operator):
             continue
         for key, values in pairs.items():
             bounded = values and all(str(v) not in UNBOUNDED_VALUES for v in values)
@@ -359,11 +366,12 @@ def check_role_trust(details: dict) -> list[Finding]:
             for federated in as_list((principal or {}).get("Federated")):
                 if "saml-provider" in federated:
                     continue
-                # Negated operators exclude some subjects and pin none, so they do not count.
+                # Negated operators exclude some subjects and pin none, and *IfExists ones
+                # match a token without a sub claim, so neither counts.
                 subs = [
                     (operator, str(v))
                     for operator, pairs in conditions(statement).items()
-                    if "not" not in operator
+                    if limits_matches(operator)
                     for key, values in pairs.items()
                     if key.endswith(":sub")
                     for v in values

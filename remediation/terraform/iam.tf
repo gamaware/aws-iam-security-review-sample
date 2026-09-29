@@ -23,6 +23,9 @@ resource "aws_iam_policy" "platform_ops" {
         # only these actions open until they sign in with MFA.
         Sid    = "ManageOwnMfaDevice"
         Effect = "Allow"
+        # Semgrep lists these MFA actions as resource exposure, but they are scoped to the
+        # caller's own user and MFA device ARNs below and cannot grant access to anyone else.
+        # nosemgrep: terraform.lang.security.iam.no-iam-resource-exposure.no-iam-resource-exposure
         Action = [
           "iam:CreateVirtualMFADevice",
           "iam:EnableMFADevice",

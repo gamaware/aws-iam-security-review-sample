@@ -193,6 +193,9 @@ def oidc_trust(condition: dict | None) -> dict:
         ({"StringLike": {"example:sub": "repo:org/app:environment:production"}}, False),
         ({"StringNotEquals": {"example:sub": "repo:evil/x"}}, True),
         ({"StringNotLike": {"example:sub": "repo:evil/*"}}, True),
+        # IfExists matches a token that carries no sub claim at all.
+        ({"StringEqualsIfExists": {"example:sub": "repo:org/app:environment:production"}}, True),
+        ({"StringLikeIfExists": {"example:sub": "repo:org/app:environment:production"}}, True),
     ],
 )
 def test_federated_trust_needs_an_exact_subject(condition, flagged):
@@ -215,6 +218,10 @@ def test_any_aws_principal_without_condition_is_flagged():
         ({"StringNotEquals": {"aws:PrincipalAccount": "444455556666"}}, True),
         ({"IpAddress": {"aws:SourceIp": "203.0.113.0/24"}}, False),
         ({"StringLike": {"aws:PrincipalArn": ["*", "arn:aws:iam::111122223333:role/x"]}}, True),
+        # IfExists matches requests without the key; Null only tests that the key is present.
+        ({"StringEqualsIfExists": {"aws:PrincipalOrgID": "o-example"}}, True),
+        ({"IpAddressIfExists": {"aws:SourceIp": "203.0.113.0/24"}}, True),
+        ({"Null": {"aws:PrincipalArn": "false"}}, True),
     ],
 )
 def test_any_aws_principal_needs_a_caller_condition(condition, flagged):

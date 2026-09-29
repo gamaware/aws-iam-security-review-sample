@@ -31,6 +31,8 @@ To produce an export from a real account you are authorized to review, with read
 ```bash
 mkdir -p export/bucket-policies
 aws iam get-account-authorization-details > export/account-authorization-details.json
+# Drop any earlier report so a failed refresh leaves no stale file for iam_review.py to read.
+rm -f export/credential-report.csv
 # Generation is asynchronous: poll until the report is COMPLETE. Denied access or missing or expired
 # credentials stop the loop at once; any other failure is retried, up to 60 attempts (about 5 minutes).
 wait_for_credential_report() {

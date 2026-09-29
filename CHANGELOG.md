@@ -45,3 +45,8 @@ rather than Semantic Versioning.
   bounded number of attempts instead of retrying forever.
 - `partner_role_arn` accepts one role ARN only; the consistency test compares statement contents with Terraform,
   not only Sids.
+- `iam_review.py`: `*IfExists` and `Null` conditions no longer count as restricting a `Principal: *` grant or
+  pinning a federated subject, since they match requests that lack the key.
+- The consistency test also compares condition keys with a `/`, condition operators and condition values.
+- `partner_role_arn` rejects an ARN with an empty role name; `scripts/README.md` removes an earlier credential
+  report before polling, so a failed refresh cannot leave a stale one.
