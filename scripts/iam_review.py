@@ -176,8 +176,16 @@ def requires_mfa(statement: dict) -> bool:
 
 
 def limits_matches(operator: str) -> bool:
-    """True for a lower-cased operator that only matches requests whose key has a listed value."""
-    return not ("not" in operator or operator.endswith("ifexists") or operator == "null")
+    """True for a lower-cased operator that only matches requests whose key has a listed value.
+
+    ForAllValues:* is true when the key is missing or empty, so it counts no more than *IfExists.
+    """
+    return not (
+        "not" in operator
+        or operator.endswith("ifexists")
+        or operator.startswith("forallvalues:")
+        or operator == "null"
+    )
 
 
 def restricts_caller(statement: dict) -> bool:
@@ -185,8 +193,8 @@ def restricts_caller(statement: dict) -> bool:
 
     Negated operators (StringNotEquals, NotIpAddress, ...) only exclude some callers, and
     a value such as "*" or 0.0.0.0/0 anywhere in the list matches everyone, so neither counts.
-    Nor do *IfExists operators, which match any request that lacks the key, or Null, which
-    only tests whether the key is present.
+    Nor do *IfExists and ForAllValues:* operators, which match any request that lacks the key,
+    or Null, which only tests whether the key is present.
     """
     for operator, pairs in conditions(statement).items():
         if not limits_matches(operator):
@@ -366,8 +374,8 @@ def check_role_trust(details: dict) -> list[Finding]:
             for federated in as_list((principal or {}).get("Federated")):
                 if "saml-provider" in federated:
                     continue
-                # Negated operators exclude some subjects and pin none, and *IfExists ones
-                # match a token without a sub claim, so neither counts.
+                # Negated operators exclude some subjects and pin none, and *IfExists and
+                # ForAllValues:* ones match a token without a sub claim, so neither counts.
                 subs = [
                     (operator, str(v))
                     for operator, pairs in conditions(statement).items()

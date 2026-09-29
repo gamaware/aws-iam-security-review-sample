@@ -196,6 +196,10 @@ def oidc_trust(condition: dict | None) -> dict:
         # IfExists matches a token that carries no sub claim at all.
         ({"StringEqualsIfExists": {"example:sub": "repo:org/app:environment:production"}}, True),
         ({"StringLikeIfExists": {"example:sub": "repo:org/app:environment:production"}}, True),
+        (
+            {"ForAllValues:StringEquals": {"example:sub": "repo:org/app:environment:production"}},
+            True,
+        ),
     ],
 )
 def test_federated_trust_needs_an_exact_subject(condition, flagged):
@@ -222,6 +226,9 @@ def test_any_aws_principal_without_condition_is_flagged():
         ({"StringEqualsIfExists": {"aws:PrincipalOrgID": "o-example"}}, True),
         ({"IpAddressIfExists": {"aws:SourceIp": "203.0.113.0/24"}}, True),
         ({"Null": {"aws:PrincipalArn": "false"}}, True),
+        # ForAllValues is true when the key is missing; ForAnyValue is false then, so it restricts.
+        ({"ForAllValues:StringEquals": {"aws:PrincipalOrgID": "o-example"}}, True),
+        ({"ForAnyValue:StringEquals": {"aws:PrincipalOrgID": "o-example"}}, False),
     ],
 )
 def test_any_aws_principal_needs_a_caller_condition(condition, flagged):
