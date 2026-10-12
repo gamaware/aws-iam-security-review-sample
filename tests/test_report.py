@@ -117,4 +117,4 @@ def test_only_documentation_account_ids_appear():
 
 def test_report_shows_no_account_ids():
     for text in (REPORT, EVIDENCE_MAP):
-        assert not re.findall(r"(?<![\w.-])\d{12}(?!\w)", text)
+        assert not re.findall(r"(?<!\w)\d{12}(?!\w)", text)
