@@ -6,6 +6,7 @@ files that `make evidence` produces, when a count drifts, or when a link breaks.
 
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 
@@ -32,6 +33,16 @@ def hits(text: str) -> list[str]:
     return [line for line in text.splitlines() if HIT.match(line)]
 
 
+def redact_account_ids(text: str) -> str:
+    """The report shows account IDs as placeholders; map the evidence the same way."""
+    scope_file = REPO / "data" / "synthetic" / "after" / "export" / "review-scope.json"
+    scope = json.loads(scope_file.read_text())
+    text = text.replace(scope["account_id"], "<account-id>")
+    for account in scope["trusted_account_ids"]:
+        text = text.replace(account, "<partner-account-id>")
+    return text
+
+
 def cited_hits() -> list[str]:
     blocks = re.findall(r"```text\n(.*?)```", REPORT, re.S)
     return [line for block in blocks for line in hits(block)]
@@ -42,7 +53,7 @@ def markdown_files() -> list[Path]:
 
 
 def test_every_quoted_hit_is_in_the_evidence_and_every_hit_is_quoted():
-    evidence = hits((EVIDENCE / "iam-review-before.txt").read_text())
+    evidence = hits(redact_account_ids((EVIDENCE / "iam-review-before.txt").read_text()))
     cited = cited_hits()
     assert sorted(set(cited)) == sorted(evidence)
 
@@ -102,3 +113,8 @@ def test_only_documentation_account_ids_appear():
             continue
         found |= set(re.findall(r"(?<![\w.-])\d{12}(?!\w)", path.read_text(errors="ignore")))
     assert found <= ALLOWED_ACCOUNT_IDS, sorted(found - ALLOWED_ACCOUNT_IDS)
+
+
+def test_report_shows_no_account_ids():
+    for text in (REPORT, EVIDENCE_MAP):
+        assert not re.findall(r"(?<!\w)\d{12}(?!\w)", text)

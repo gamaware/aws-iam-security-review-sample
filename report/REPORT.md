@@ -1,19 +1,19 @@
 # AWS IAM and security configuration review
 
-> **This sample covers a FICTIONAL client, Harbor Goods, a mid-size retailer with account `111122223333`.**
+> **This sample covers a FICTIONAL client, Harbor Goods, a mid-size retailer with account `<account-id>`.**
 > The client, its staff and its account are fictional. Each repository in this portfolio is a separate
 > engagement with Harbor Goods, a fictional mid-size retailer. The repository files reproduce all findings below
 > through `make verify`.
 
 | Item | Value |
 | --- | --- |
-| Account | `111122223333` (fictional), home region `us-east-1` |
+| Account | `<account-id>` (fictional), home region `us-east-1` |
 | Method | Offline review of read-only exports plus the account's Terraform; no write access was used |
 | Inputs | [`data/synthetic/before/export/`](../data/synthetic/before/export/), [`data/synthetic/before/terraform/`](../data/synthetic/before/terraform/) |
 | Tools | [`scripts/iam_review.py`](../scripts/iam_review.py) (17 checks), Checkov 3.3.19 (Terraform) |
 | Method detail | [`docs/methodology.md`](../docs/methodology.md) |
 | Evidence | [`evidence/`](../evidence/) holds the unedited output of both tools |
-| Prepared by | Alex Garcia |
+| Prepared by | Independent AWS consultant |
 
 ## Executive summary
 
@@ -93,7 +93,7 @@ within one prefix and updating one Lambda function.
  "Resource": "arn:aws:s3:::harborgoods-release-artifacts/reporting-app/*"},
 {"Sid": "DeployOneFunction", "Effect": "Allow",
  "Action": ["lambda:GetFunction", "lambda:UpdateFunctionCode", "lambda:PublishVersion"],
- "Resource": "arn:aws:lambda:us-east-1:111122223333:function:reporting-app"}
+ "Resource": "arn:aws:lambda:us-east-1:<account-id>:function:reporting-app"}
 ```
 
 Validate the pipeline's required actions before the switch, using either 90 days of the role's CloudTrail events or
@@ -214,12 +214,12 @@ changes for role and policy updates rather than console edits.
 
 ```json
 {"Sid": "PassOnlyAppRolesToEc2WithMfa", "Effect": "Allow", "Action": "iam:PassRole",
- "Resource": "arn:aws:iam::111122223333:role/app-*",
+ "Resource": "arn:aws:iam::<account-id>:role/app-*",
  "Condition": {"StringEquals": {"iam:PassedToService": "ec2.amazonaws.com"},
                "Bool": {"aws:MultiFactorAuthPresent": "true"}}},
 {"Sid": "StopAndTerminatePlatformInstancesOnly", "Effect": "Allow",
  "Action": ["ec2:StopInstances", "ec2:TerminateInstances"],
- "Resource": "arn:aws:ec2:*:111122223333:instance/*",
+ "Resource": "arn:aws:ec2:*:<account-id>:instance/*",
  "Condition": {"StringEquals": {"aws:ResourceTag/team": "platform"}}}
 ```
 
@@ -291,17 +291,17 @@ Apply the secure bucket baseline to the destination bucket. Implementation is in
 **Evidence:**
 
 ```text
-MEDIUM   S3-002   s3://harborgoods-customer-exports: account 999988887777 allowed s3:*
+MEDIUM   S3-002   s3://harborgoods-customer-exports: account <partner-account-id> allowed s3:*
 ```
 
-**Impact.** The Sid identifies account `999988887777` as the analytics vendor. Its permissions cover reading,
+**Impact.** The Sid identifies account `<partner-account-id>` as the analytics vendor. Its permissions cover reading,
 overwriting and deleting all exports, plus changing bucket configuration. A grant to that account's root lets
 the vendor's IAM administrators decide which identities within the account receive access.
 
 **Recommended fix.** Document the vendor as an approved third party in the review scope. Authorize a single named
 role to list and read only its prefix. Give the bucket a separate KMS key, with a policy that permits the role to
 decrypt solely through S3 (`kms:ViaService`). This keeps the vendor from using the audit-log encryption key.
-The client verified the vendor relationship; the remediated scope therefore marks `999988887777` as trusted.
+The client verified the vendor relationship; the remediated scope therefore marks `<partner-account-id>` as trusted.
 
 **Scoped rewrite**
 ([`customer-exports-bucket-policy.json`](../remediation/policies/customer-exports-bucket-policy.json)):
@@ -311,11 +311,11 @@ The client verified the vendor relationship; the remediated scope therefore mark
  "Resource": ["arn:aws:s3:::harborgoods-customer-exports", "arn:aws:s3:::harborgoods-customer-exports/*"],
  "Condition": {"Bool": {"aws:SecureTransport": "false"}}},
 {"Sid": "PartnerListsItsPrefix", "Effect": "Allow",
- "Principal": {"AWS": "arn:aws:iam::999988887777:role/partner-ingest"}, "Action": "s3:ListBucket",
+ "Principal": {"AWS": "arn:aws:iam::<partner-account-id>:role/partner-ingest"}, "Action": "s3:ListBucket",
  "Resource": "arn:aws:s3:::harborgoods-customer-exports",
  "Condition": {"StringLike": {"s3:prefix": ["partner-a/*"]}}},
 {"Sid": "PartnerReadsItsPrefix", "Effect": "Allow",
- "Principal": {"AWS": "arn:aws:iam::999988887777:role/partner-ingest"}, "Action": "s3:GetObject",
+ "Principal": {"AWS": "arn:aws:iam::<partner-account-id>:role/partner-ingest"}, "Action": "s3:GetObject",
  "Resource": "arn:aws:s3:::harborgoods-customer-exports/partner-a/*"}
 ```
 

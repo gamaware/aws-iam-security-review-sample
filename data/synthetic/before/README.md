@@ -1,8 +1,8 @@
 # Before: Harbor Goods account (FICTIONAL, insecure on purpose)
 
 > **Everything here is fictional and deliberately insecure. Do not apply this Terraform to any real account.**
-> Account `111122223333` and partner account `999988887777` are the AWS documentation placeholder IDs. The company,
-> the people and the repositories do not exist.
+> The account (`YOUR_AWS_ACCOUNT_ID`) and partner account (`PARTNER_AWS_ACCOUNT_ID`) use AWS documentation placeholder
+> IDs. The company, the people and the repositories do not exist.
 
 This folder is the "before" state that the review in [`report/`](../../../report/) assesses.
 
