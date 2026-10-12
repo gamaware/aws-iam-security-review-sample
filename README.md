@@ -11,8 +11,10 @@ An AWS security and IAM review with ranked findings, reproducible evidence and f
 > **Fictional sample.** Harbor Goods and all data here are fictional. Each repository in this portfolio is a
 > separate engagement with Harbor Goods, a fictional mid-size retailer. Account IDs are AWS documentation examples.
 
-The Harbor Goods production account is `111122223333`; its analytics vendor uses `999988887777`. The Terraform under
-`data/synthetic/before/` contains deliberate security weaknesses. Never apply it.
+Prose shows the Harbor Goods production account as `YOUR_AWS_ACCOUNT_ID` and its analytics vendor as
+`PARTNER_AWS_ACCOUNT_ID`; the report shows `<account-id>` and `<partner-account-id>`. Only the files the checks parse
+hold AWS documentation example IDs. The Terraform under `data/synthetic/before/` contains deliberate security
+weaknesses. Never apply it.
 
 ## Executive summary
 
@@ -163,8 +165,7 @@ Checks assert the deliberately insecure fixtures as expected findings; they neve
 
 This repository belongs to the [AWS DevOps portfolio](https://github.com/gamaware/aws-devops-portfolio) and supports
 the [AWS security and IAM review on Upwork](https://www.upwork.com/freelancers/~014b3520cf9e140103) service. The
-method is the one Alex uses in audits for ITESO and freelance clients in Guadalajara. All findings in this example
-were invented for Harbor Goods.
+method is the one used in real client audits. All findings in this example were invented for Harbor Goods.
 
 The repository uses the [MIT](LICENSE) license and inherits its contribution, support and security policies from
 [gamaware/.github](https://github.com/gamaware/.github). Additional information appears in

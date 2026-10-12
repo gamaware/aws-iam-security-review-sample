@@ -30,6 +30,8 @@ rather than Semantic Versioning.
 - Moved to the portfolio's sample-deliverable layout (`report/`, `evidence/`, `data/synthetic/`, `scripts/`,
   `tests/`, `remediation/`) and renamed the fictional client to Harbor Goods.
 - Contribution guide and issue and pull request templates are now inherited from `gamaware/.github`.
+- The report, its PDF, the docs and the context diagram show account IDs as placeholders (`<account-id>`,
+  `YOUR_AWS_ACCOUNT_ID`) and carry no personal byline; only files the checks parse keep example IDs.
 
 ### Fixed
 
