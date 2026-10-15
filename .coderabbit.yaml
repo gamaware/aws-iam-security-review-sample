@@ -37,6 +37,7 @@ reviews:
       instructions: >
         Line length 120 (tables exempt), sentence-case headings, relative links that resolve,
         AWS documentation example account IDs only.
+        No job-marketplace profile links, service offers or sales badges.
   path_filters:
     - "!**/*.png"
     - "!docs/diagrams/*.drawio"
