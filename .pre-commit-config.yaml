@@ -18,7 +18,7 @@ repos:
         args: [--branch, main]
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: 253d99053f80e4a368175e93b36edb662e7e5135  # frozen: v1.109.1
+    rev: 80c8033123f6d6b9ccd1a9458562ea4180742af7  # frozen: v1.109.2
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
@@ -34,13 +34,13 @@ repos:
   # The before account in data/synthetic/before is vulnerable on purpose; the gate applies to the remediated code.
   # `make checkov` checks that the sample still fails with exactly the reported checks.
   - repo: https://github.com/bridgecrewio/checkov
-    rev: 8c0ddf99eabe4db75c739320274c7764866cd03d  # frozen: 3.3.19
+    rev: 22ba0d2077cd3a09fc1547ae80be9ffe4e471e6c  # frozen: 3.3.27
     hooks:
       - id: checkov
         args: [--quiet, --compact, --framework, terraform, --skip-path, data/synthetic/before]
 
   - repo: https://github.com/Mateusz-Grzelinski/actionlint-py
-    rev: 805f85e558841bf4d852335e036b33d2b26be1cc  # frozen: v1.7.12.25
+    rev: 357f7eec6dec49bf7693dc0dbec30212226d5492  # frozen: v1.7.12.25
     hooks:
       - id: actionlint
 
@@ -51,13 +51,13 @@ repos:
         args: [--offline]
 
   - repo: https://github.com/Yelp/detect-secrets
-    rev: 01886c8a910c64595c47f186ca1ffc0b77fa5458  # frozen: v1.5.0
+    rev: 68e8b45440415753fff70a312ece8da92ba85b4a  # frozen: v1.5.0
     hooks:
       - id: detect-secrets
         args: [--baseline, .secrets.baseline]
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: 745eface02aef23e168a8afb6b5737818efbea95  # frozen: v0.11.0.1
+    rev: a6564f5d57444e123433a5c9af733e3975c77229  # frozen: v0.11.0.1-1
     hooks:
       - id: shellcheck
         args: [--severity=warning]
@@ -71,7 +71,7 @@ repos:
         types: [shell]
 
   - repo: https://github.com/gitleaks/gitleaks
-    rev: 6eaad039603a4de39fddd1cf5f727391efe9974e  # frozen: v8.30.0
+    rev: 2ca41cc1372d1e939a6a879f18cdc19fc1cac1ce  # frozen: v8.30.0
     hooks:
       - id: gitleaks
 
@@ -82,14 +82,14 @@ repos:
         args: [--fix]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: a56c0b927e6465d37cae3e97d35d4d18ab2b96cd  # frozen: v0.16.9
+    rev: 44b5042edab9382aba712eed4f9c7bab7a3d6a3e  # frozen: v0.17.0
     hooks:
       - id: ruff-check
       - id: ruff-format
         args: [--check]
 
   - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: 5f9c312d9978fbcee1da97154ba385834eeda799  # frozen: v4.0.0
+    rev: 3db014c16a9d31997ab8c07a4d61fcce936c8f0d  # frozen: v4.4.0
     hooks:
       - id: conventional-pre-commit
         stages: [commit-msg]
