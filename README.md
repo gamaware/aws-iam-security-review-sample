@@ -163,9 +163,8 @@ Checks assert the deliberately insecure fixtures as expected findings; they neve
 
 ## Related work
 
-This repository belongs to the [AWS DevOps portfolio](https://github.com/gamaware/aws-devops-portfolio) and supports
-the [AWS security and IAM review on Upwork](https://www.upwork.com/freelancers/~014b3520cf9e140103) service. The
-method is the one used in real client audits. All findings in this example were invented for Harbor Goods.
+This repository belongs to the [AWS DevOps portfolio](https://github.com/gamaware/aws-devops-portfolio). All
+findings in this example were invented for Harbor Goods.
 
 The repository uses the [MIT](LICENSE) license and inherits its contribution, support and security policies from
 [gamaware/.github](https://github.com/gamaware/.github). Additional information appears in

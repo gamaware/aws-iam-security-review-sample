@@ -13,3 +13,4 @@ This repository is a sample AWS IAM security review for Harbor Goods, a fictiona
 - Workflows: `permissions: {}` at the top, per-job grants, actions pinned by full SHA, `timeout-minutes` on every job,
   no `pull_request_target`, no AWS credentials or `id-token` in pull request jobs.
 - Pull request titles follow Conventional Commits.
+- Flag job-marketplace profile links, service offers and sales badges; none are allowed.
