@@ -18,7 +18,7 @@ repos:
         args: [--branch, main]
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: 80c8033123f6d6b9ccd1a9458562ea4180742af7  # frozen: v1.109.2
+    rev: 4c4437d784e93cacb1f05f1d7bc28e4354fafd20  # frozen: v1.109.4
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
@@ -34,7 +34,7 @@ repos:
   # The before account in data/synthetic/before is vulnerable on purpose; the gate applies to the remediated code.
   # `make checkov` checks that the sample still fails with exactly the reported checks.
   - repo: https://github.com/bridgecrewio/checkov
-    rev: 22ba0d2077cd3a09fc1547ae80be9ffe4e471e6c  # frozen: 3.3.27
+    rev: 9504d068f8411b04a0ad67099d0d302242ba7d43  # frozen: 3.4.0
     hooks:
       - id: checkov
         args: [--quiet, --compact, --framework, terraform, --skip-path, data/synthetic/before]
@@ -45,7 +45,7 @@ repos:
       - id: actionlint
 
   - repo: https://github.com/woodruffw/zizmor-pre-commit
-    rev: fa412071e4f5d44d44f9e365f4676f9df92456a2  # frozen: v1.30.1
+    rev: c92afdf2c6ca336aaa8f39e2bd8d48f62dbd8e1f  # frozen: v1.31.1
     hooks:
       - id: zizmor
         args: [--offline]
@@ -76,20 +76,20 @@ repos:
       - id: gitleaks
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: 916ad0aaa108c64d294101002066f530ea170b10  # frozen: v0.23.3
+    rev: 341e2a331ba578029e66c2e01183e7a6b5ca9ab4  # frozen: v0.24.0
     hooks:
       - id: markdownlint-cli2
         args: [--fix]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 44b5042edab9382aba712eed4f9c7bab7a3d6a3e  # frozen: v0.17.0
+    rev: 25bcf95026b96e2dd3c0aec3090c3d6ef6ca2e6c  # frozen: v0.17.3
     hooks:
       - id: ruff-check
       - id: ruff-format
         args: [--check]
 
   - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: 3db014c16a9d31997ab8c07a4d61fcce936c8f0d  # frozen: v4.4.0
+    rev: 81d3af62ea96a1f69f0cfa8745f253d3c4740896  # frozen: v4.5.0
     hooks:
       - id: conventional-pre-commit
         stages: [commit-msg]
