@@ -6,12 +6,18 @@ updates:
       interval: weekly
     cooldown:
       default-days: 7
+    groups:
+      github-actions-all:
+        patterns: ["*"]
   - package-ecosystem: pip
     directory: /
     schedule:
       interval: weekly
     cooldown:
       default-days: 7
+    groups:
+      pip-all:
+        patterns: ["*"]
   - package-ecosystem: terraform
     directories:
       - /data/synthetic/before/terraform
@@ -20,3 +26,7 @@ updates:
       interval: weekly
     cooldown:
       default-days: 7
+    groups:
+      terraform-all:
+        group-by: dependency-name
+        patterns: ["*"]
